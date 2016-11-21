@@ -12,10 +12,10 @@ public class LogRecord {
     private File file;
     private String ipAddress;
     private String remoteUser;
-    private String authenticatedUser;
     private String request;
     private Integer statCode;
     private Integer bytesSent;
+    private DateTime timeAccessed;
     private DateTime timeEntered;
 
     public LogRecord() {
@@ -50,14 +50,6 @@ public class LogRecord {
         this.remoteUser = remoteUser;
     }
 
-    public String getAuthenticatedUser() {
-        return authenticatedUser;
-    }
-
-    public void setAuthenticatedUser(String authenticatedUser) {
-        this.authenticatedUser = authenticatedUser;
-    }
-
     public String getRequest() {
         return request;
     }
@@ -83,11 +75,32 @@ public class LogRecord {
     }
 
     public DateTime getTimeEntered() {
-        return timeEntered;
+        return timeAccessed;
     }
 
-    public void setTimeEntered(DateTime timeEntered) {
-        this.timeEntered = timeEntered;
+    public void setTimeEntered(DateTime timeAccessed) {
+        this.timeAccessed = timeAccessed;
     }
 
+    public DateTime getTimeAccessed() {
+        return timeAccessed;
+    }
+
+    public void setTimeAccessed(DateTime timeAccessed) {
+        this.timeAccessed = timeAccessed;
+    }
+
+    @Override
+    public String toString() {
+        return "LogRecord{" +
+                "file=" + file +
+                ", ipAddress='" + ipAddress + '\'' +
+                ", remoteUser='" + remoteUser + '\'' +
+                ", request='" + request + '\'' +
+                ", statCode=" + statCode +
+                ", bytesSent=" + bytesSent +
+                ", timeAccessed=" + timeAccessed +
+                ", timeEntered=" + timeEntered +
+                '}';
+    }
 }
