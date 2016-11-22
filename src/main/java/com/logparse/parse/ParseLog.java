@@ -1,4 +1,4 @@
-package com.logparse;
+package com.logparse.parse;
 
 import com.logparse.bean.LogRecord;
 import org.apache.log4j.Logger;
@@ -15,6 +15,14 @@ import java.util.regex.Pattern;
  * Created by Seth on 11/20/2016.
  */
 public class ParseLog {
+
+    private File file;
+    private DateTime timeEntered;
+
+    public ParseLog(File file, DateTime timeEntered) {
+        this.file = file;
+        this.timeEntered = timeEntered;
+    }
 
     private Logger logger = Logger.getLogger(ParseLog.class);
 
@@ -42,15 +50,14 @@ public class ParseLog {
             + ".*?"	// Non-greedy match on filler
             + "(\\d+)";	// Integer Number 2
 
-
-    public void parseApacheLogFile(LogRecord logRecord) {
-        logRecords = addLogRecordsToList(logRecord.getFile());
+    public void parseApacheLogFileWriteToDb(ParseLog parseLog) {
+        logRecords = addLogRecordsToList(parseLog);
     }
 
-    private List<LogRecord> addLogRecordsToList(File file) {
+    private List<LogRecord> addLogRecordsToList(ParseLog parseLog) {
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new FileReader(parseLog.getFile()));
             String line = null;
 
             Pattern p = Pattern.compile(regexNoRemoteUser, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
@@ -63,10 +70,11 @@ public class ParseLog {
                     logRecord.setRequest(m.group(3));
                     logRecord.setStatCode(Integer.parseInt(m.group(4)));
                     logRecord.setBytesSent(Integer.parseInt(m.group(5)));
+                    logRecord.setTimeEntered(parseLog.getTimeEntered());
                     logRecords.add(logRecord);
                     logger.info("Log Record no remote user: " + logRecord.toString());
                 } else {
-                    logRecord = logRecordRemoteUserIncluded(logRecord, line);
+                    logRecord = logRecordRemoteUserIncluded(logRecord, parseLog.getTimeEntered(), line);
                     if (logRecord != null) {
                         logRecords.add(logRecord);
                         logger.info("Log Record with remote user: " + logRecord.toString());
@@ -74,14 +82,14 @@ public class ParseLog {
                 }
             }
         } catch (FileNotFoundException e) {
-            logger.error("Error :", e);
+            logger.error("Error : ", e);
         } catch (IOException e) {
             logger.error("Error: ", e);
         }
         return logRecords;
     }
 
-    private LogRecord logRecordRemoteUserIncluded(LogRecord logRecord, String line) {
+    private LogRecord logRecordRemoteUserIncluded(LogRecord logRecord, DateTime timeEntered, String line) {
         Pattern p = Pattern.compile(regexRemoteUserIncluded, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
         Matcher m = p.matcher(line);
         if (m.find()) {
@@ -91,12 +99,29 @@ public class ParseLog {
             logRecord.setRequest(m.group(4));
             logRecord.setStatCode(Integer.parseInt(m.group(5)));
             logRecord.setBytesSent(Integer.parseInt(m.group(6)));
+            logRecord.setTimeEntered(timeEntered);
             return logRecord;
         }
         return null;
     }
 
     private DateTime formatDate(String dateStr) {
-        return DateTime.parse(dateStr, DateTimeFormat.forPattern("dd/MMM/yyyy:HH:mm:ss Z"));
+        return DateTime.parse(dateStr, DateTimeFormat.forPattern("dd/MMM/yyyy:HH:mm:ss Z")).toDateTime();
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public DateTime getTimeEntered() {
+        return timeEntered;
+    }
+
+    public void setTimeEntered(DateTime timeEntered) {
+        this.timeEntered = timeEntered;
     }
 }

@@ -22,10 +22,6 @@ public class LogRecord {
         super();
     }
 
-    public LogRecord(File file) {
-        this.file = file;
-    }
-
     public File getFile() {
         return file;
     }
@@ -75,11 +71,11 @@ public class LogRecord {
     }
 
     public DateTime getTimeEntered() {
-        return timeAccessed;
+        return timeEntered;
     }
 
-    public void setTimeEntered(DateTime timeAccessed) {
-        this.timeAccessed = timeAccessed;
+    public void setTimeEntered(DateTime timeEntered) {
+        this.timeEntered = timeEntered;
     }
 
     public DateTime getTimeAccessed() {
