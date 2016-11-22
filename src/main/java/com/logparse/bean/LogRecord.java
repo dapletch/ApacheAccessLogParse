@@ -9,7 +9,6 @@ import java.io.File;
  */
 public class LogRecord {
 
-    private File file;
     private String ipAddress;
     private String remoteUser;
     private String request;
@@ -20,14 +19,6 @@ public class LogRecord {
 
     public LogRecord() {
         super();
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 
     public String getIpAddress() {
@@ -89,8 +80,7 @@ public class LogRecord {
     @Override
     public String toString() {
         return "LogRecord{" +
-                "file=" + file +
-                ", ipAddress='" + ipAddress + '\'' +
+                "ipAddress='" + ipAddress + '\'' +
                 ", remoteUser='" + remoteUser + '\'' +
                 ", request='" + request + '\'' +
                 ", statCode=" + statCode +

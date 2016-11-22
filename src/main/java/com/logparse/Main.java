@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 import java.io.File;
+import java.sql.SQLException;
 
 public class Main {
 
@@ -12,7 +13,7 @@ public class Main {
 
     private static final String errorMessage = "Please enter a valid file to be parsed, and try again.";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         if (args.length == 1) {
             File file = new File(args[0]);
 
@@ -26,6 +27,7 @@ public class Main {
             logger.info("The file to be parsed: " + parseLog.getFile());
             logger.info("Time stamp for log records: " + parseLog.getTimeEntered());
             parseLog.parseApacheLogFileWriteToDb(parseLog);
+            logger.info("Data Import Completed.");
         } else {
             logger.error(errorMessage);
             System.exit(0);

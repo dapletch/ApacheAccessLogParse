@@ -1,11 +1,13 @@
 package com.logparse.parse;
 
 import com.logparse.bean.LogRecord;
+import com.logparse.dao.InsertLog;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -23,6 +25,8 @@ public class ParseLog {
         this.file = file;
         this.timeEntered = timeEntered;
     }
+
+    private InsertLog insertLog = new InsertLog();
 
     private Logger logger = Logger.getLogger(ParseLog.class);
 
@@ -50,8 +54,9 @@ public class ParseLog {
             + ".*?"	// Non-greedy match on filler
             + "(\\d+)";	// Integer Number 2
 
-    public void parseApacheLogFileWriteToDb(ParseLog parseLog) {
+    public void parseApacheLogFileWriteToDb(ParseLog parseLog) throws SQLException, ClassNotFoundException {
         logRecords = addLogRecordsToList(parseLog);
+        insertLog.writeLogToDb(logRecords);
     }
 
     private List<LogRecord> addLogRecordsToList(ParseLog parseLog) {
@@ -72,12 +77,12 @@ public class ParseLog {
                     logRecord.setBytesSent(Integer.parseInt(m.group(5)));
                     logRecord.setTimeEntered(parseLog.getTimeEntered());
                     logRecords.add(logRecord);
-                    logger.info("Log Record no remote user: " + logRecord.toString());
+                    //logger.info("Log Record no remote user: " + logRecord.toString());
                 } else {
                     logRecord = logRecordRemoteUserIncluded(logRecord, parseLog.getTimeEntered(), line);
                     if (logRecord != null) {
                         logRecords.add(logRecord);
-                        logger.info("Log Record with remote user: " + logRecord.toString());
+                        //logger.info("Log Record with remote user: " + logRecord.toString());
                     }
                 }
             }
