@@ -1,7 +1,7 @@
 package com.logparse.properties;
 
 import com.logparse.bean.JDBCProperties;
-import com.logparse.dao.InsertLog;
+import com.logparse.os.OSUtils;
 import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
@@ -17,14 +17,11 @@ public class GetProperties {
     private Logger logger = Logger.getLogger(GetProperties.class);
 
     public JDBCProperties loadJdbcProperties() {
-        // Get the directory that the jdbc.properties file currently resides in
-        String dir = System.getProperty("user.dir");
-        Integer index = dir.lastIndexOf("\\");
-        String curDir = dir.substring(0, index) + "\\";
 
         Properties prop = new Properties();
         try {
-            FileInputStream in = new FileInputStream(curDir + "jdbc.properties");
+            // Get the directory that the jdbc.properties file currently resides in
+            FileInputStream in = new FileInputStream(OSUtils.getFilePathAboveCurrentOne() + "jdbc.properties");
             prop.load(in);
             in.close();
             JDBCProperties jdbcProperties = new JDBCProperties(prop.getProperty("jdbc.driver")
@@ -51,7 +48,7 @@ public class GetProperties {
                 || jdbcProperties.getUrl() != null
                 || jdbcProperties.getUsername() != null
                 || jdbcProperties.getPassword() != null) {
-            logger.info("All properties jdbc properties are valid : \n" + jdbcProperties.toString());
+            logger.info("All properties jdbc properties are valid: \n" + jdbcProperties.toString());
             return true;
         }
         return false;
