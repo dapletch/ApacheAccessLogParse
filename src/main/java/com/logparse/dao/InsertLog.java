@@ -1,6 +1,8 @@
 package com.logparse.dao;
 
+import com.logparse.bean.JDBCProperties;
 import com.logparse.bean.LogRecord;
+import com.logparse.properties.GetProperties;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -13,6 +15,10 @@ public class InsertLog {
 
     private Logger logger = Logger.getLogger(InsertLog.class);
 
+    private GetProperties getJdbcProperties = new GetProperties();
+
+    private JDBCProperties jdbcProperties = null;
+
     private PreparedStatement preparedStatement = null;
 
     private Connection connection = null;
@@ -21,9 +27,13 @@ public class InsertLog {
             + " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     private Connection getConnection() throws SQLException, ClassNotFoundException {
+        if (jdbcProperties == null) {
+            jdbcProperties = getJdbcProperties.loadJdbcProperties();
+        }
+
         Connection connection;
-        Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apache_log_parse", "root", "");
+        Class.forName(jdbcProperties.getClassName());
+        connection = DriverManager.getConnection(jdbcProperties.getUrl(), jdbcProperties.getUsername(), jdbcProperties.getPassword());
         if (connection != null) {
             logger.info("Database connection established.");
             return connection;
