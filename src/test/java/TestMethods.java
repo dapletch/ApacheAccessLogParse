@@ -1,3 +1,4 @@
+import com.logparse.beans.TimeAccessedDayCnt;
 import com.logparse.beans.TimeAccessedDayPreReqs;
 import com.logparse.dao.GetTimeAccessedDayCnts;
 import com.logparse.dao.JDBCConnectionUtils;
@@ -8,6 +9,8 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Seth on 11/21/2016.
@@ -21,6 +24,8 @@ public class TestMethods {
     private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
 
     private Connection connection = null;
+
+    private List<TimeAccessedDayCnt> timeAccessedDayCntList = new ArrayList<TimeAccessedDayCnt>();
 
     /*
     @Test
@@ -56,6 +61,7 @@ public class TestMethods {
         timeAccessedDayPreReqs = getTimeAccessedDayCnts.getTimeAccessedDateRange(timeAccessedDayPreReqs);
         System.out.println("Prerequisite Date Ranges: " + timeAccessedDayPreReqs.toString());
 
+        timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(timeAccessedDayPreReqs);
 
         jdbcConnectionUtils.closeConnection();
     }

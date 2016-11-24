@@ -39,42 +39,6 @@ public class TimeAccessedDayCnt {
         super();
     }
 
-    public TimeAccessedDayCnt(DateTime timeAccessed, Integer oneAm, Integer twoAm, Integer threeAm
-            , Integer fourAm, Integer fiveAm, Integer sixAm, Integer sevenAm
-            , Integer eightAm, Integer nineAm, Integer tenAm, Integer elevenAm
-            , Integer twelvePm, Integer onePm, Integer twoPm, Integer threePm
-            , Integer fourPm, Integer fivePm, Integer sixPm, Integer sevenPm
-            , Integer eightPm, Integer ninePm, Integer tenPm, Integer elevenPm
-            , Integer twelveAm, Integer totalDayCnt, DateTime timeEntered) {
-        this.timeAccessed = timeAccessed;
-        this.oneAm = oneAm;
-        this.twoAm = twoAm;
-        this.threeAm = threeAm;
-        this.fourAm = fourAm;
-        this.fiveAm = fiveAm;
-        this.sixAm = sixAm;
-        this.sevenAm = sevenAm;
-        this.eightAm = eightAm;
-        this.nineAm = nineAm;
-        this.tenAm = tenAm;
-        this.elevenAm = elevenAm;
-        this.twelvePm = twelvePm;
-        this.onePm = onePm;
-        this.twoPm = twoPm;
-        this.threePm = threePm;
-        this.fourPm = fourPm;
-        this.fivePm = fivePm;
-        this.sixPm = sixPm;
-        this.sevenPm = sevenPm;
-        this.eightPm = eightPm;
-        this.ninePm = ninePm;
-        this.tenPm = tenPm;
-        this.elevenPm = elevenPm;
-        this.twelveAm = twelveAm;
-        this.totalDayCnt = totalDayCnt;
-        this.timeEntered = timeEntered;
-    }
-
     public DateTime getTimeAccessed() {
         return timeAccessed;
     }
