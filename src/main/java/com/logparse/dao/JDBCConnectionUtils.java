@@ -4,9 +4,7 @@ import com.logparse.beans.JDBCProperties;
 import com.logparse.properties.GetProperties;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by Seth on 11/23/2016.
@@ -20,6 +18,8 @@ public class JDBCConnectionUtils {
     private JDBCProperties jdbcProperties = null;
 
     private Connection connection = null;
+
+    private PreparedStatement preparedStatement = null;
 
     public Connection getConnection() throws SQLException, ClassNotFoundException {
         if (jdbcProperties == null) {

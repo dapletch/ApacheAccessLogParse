@@ -1,13 +1,28 @@
+import com.logparse.beans.TimeAccessedDayPreReqs;
+import com.logparse.dao.GetTimeAccessedDayCnts;
+import com.logparse.dao.JDBCConnectionUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Created by Seth on 11/21/2016.
  */
 public class TestMethods {
 
+    private GetTimeAccessedDayCnts getTimeAccessedDayCnts = new GetTimeAccessedDayCnts();
+
+    private TimeAccessedDayPreReqs timeAccessedDayPreReqs = new TimeAccessedDayPreReqs();
+
+    private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
+
+    private Connection connection = null;
+
+    /*
     @Test
     public void formatDate() {
         String dateStr = "02/Jun/2016:21:16:24 -0400";
@@ -25,5 +40,23 @@ public class TestMethods {
         String dir = System.getProperty("user.dir");
         Integer index = dir.lastIndexOf("\\");
         System.out.println(dir.substring(0, index) + "\\");
+    }
+    */
+
+    @Test
+    public void getPreRequisiteDates() throws SQLException, ClassNotFoundException {
+        if (connection == null) {
+            connection = jdbcConnectionUtils.getConnection();
+        }
+
+        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getMaxTimeEntered();
+
+        System.out.println("Max Time Entered: " + timeAccessedDayPreReqs.getMaxTimeEntered());
+
+        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getTimeAccessedDateRange(timeAccessedDayPreReqs);
+        System.out.println("Prerequisite Date Ranges: " + timeAccessedDayPreReqs.toString());
+
+
+        jdbcConnectionUtils.closeConnection();
     }
 }
