@@ -1,4 +1,4 @@
-package com.logparse.os;
+package com.logparse.utils;
 
 import com.logparse.properties.GetProperties;
 import org.apache.log4j.Logger;

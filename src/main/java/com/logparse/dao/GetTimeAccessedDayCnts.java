@@ -2,6 +2,7 @@ package com.logparse.dao;
 
 import com.logparse.beans.TimeAccessedDayCnt;
 import com.logparse.beans.TimeAccessedDayPreReqs;
+import com.logparse.utils.LogUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -73,7 +74,7 @@ public class GetTimeAccessedDayCnts {
         }
         resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            timeAccessedDayPreReqs.setMaxTimeEntered(timeStampToDateTime(resultSet.getString(1)));
+            timeAccessedDayPreReqs.setMaxTimeEntered(LogUtils.sqlDateToDateTime(resultSet.getString(1)));
         }
         return timeAccessedDayPreReqs;
     }
@@ -88,12 +89,12 @@ public class GetTimeAccessedDayCnts {
         if (preparedStatement == null) {
             preparedStatement = connection.prepareStatement(getTimeAccessedDateRangesQuery);
         }
-        preparedStatement.setDate(1, dateToSqlDate(timeAccessedDayPreReqs.getMaxTimeEntered()));
+        preparedStatement.setDate(1, LogUtils.dateTimeToSqlDate(timeAccessedDayPreReqs.getMaxTimeEntered()));
         resultSet = preparedStatement.executeQuery();
 
         if (resultSet.next()) {
-            timeAccessedDayPreReqs.setMinTimeAccessed(timeStampToDateTime(resultSet.getString(1)));
-            timeAccessedDayPreReqs.setMaxTimeAccessed(timeStampToDateTime(resultSet.getString(2)));
+            timeAccessedDayPreReqs.setMinTimeAccessed(LogUtils.sqlDateToDateTime(resultSet.getString(1)));
+            timeAccessedDayPreReqs.setMaxTimeAccessed(LogUtils.sqlDateToDateTime(resultSet.getString(2)));
         }
 
         return timeAccessedDayPreReqs;
@@ -114,15 +115,15 @@ public class GetTimeAccessedDayCnts {
         for (date = timeAccessedDayPreReqs.getMinTimeAccessed(); date.isBefore(timeAccessedDayPreReqs.getMaxTimeAccessed()); date = date.plusDays(1)) {
             TimeAccessedDayCnt timeAccessedDayCnt = new TimeAccessedDayCnt();
             preparedStatement.clearParameters();
-            preparedStatement.setDate(1, dateToSqlDate(date));
-            preparedStatement.setDate(2, dateToSqlDate(timeAccessedDayPreReqs.getMaxTimeEntered()));
+            preparedStatement.setDate(1, LogUtils.dateTimeToSqlDate(date));
+            preparedStatement.setDate(2, LogUtils.dateTimeToSqlDate(timeAccessedDayPreReqs.getMaxTimeEntered()));
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                if (!isDateStringValid(resultSet.getString(1))) {
+                if (!LogUtils.isDateStringValid(resultSet.getString(1))) {
                     // Just skip over record if the dateStr is null, that means there were no records for that day
                     continue;
                 }
-                timeAccessedDayCnt.setTimeAccessed(timeStampToDateTime(resultSet.getString(1)));
+                timeAccessedDayCnt.setTimeAccessed(LogUtils.sqlDateToDateTime(resultSet.getString(1)));
                 timeAccessedDayCnt.setOneAm(resultSet.getInt(2));
                 timeAccessedDayCnt.setTwoAm(resultSet.getInt(3));
                 timeAccessedDayCnt.setThreeAm(resultSet.getInt(4));
@@ -154,17 +155,5 @@ public class GetTimeAccessedDayCnts {
             timeAccessedDayCntList.add(timeAccessedDayCnt);
         }
         return timeAccessedDayCntList;
-    }
-
-    private DateTime timeStampToDateTime(String dateStr) {
-        return DateTime.parse(dateStr, DateTimeFormat.forPattern("yyyy-MM-dd")).toDateTime();
-    }
-
-    private Boolean isDateStringValid(String dateStr) {
-        return dateStr != null;
-    }
-
-    private java.sql.Date dateToSqlDate(DateTime date) {
-        return new java.sql.Date(date.getMillis());
     }
 }

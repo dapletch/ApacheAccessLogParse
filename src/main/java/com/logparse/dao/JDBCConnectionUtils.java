@@ -41,8 +41,7 @@ public class JDBCConnectionUtils {
             connection.close();
             logger.info("Database connection closed.");
         } catch (SQLException e) {
-            logger.error("Database connection failed to close.");
-            e.printStackTrace();
+            logger.error("Database connection failed to close. \n" + e);
         }
     }
 }

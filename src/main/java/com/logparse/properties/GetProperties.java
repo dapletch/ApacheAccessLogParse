@@ -1,7 +1,7 @@
 package com.logparse.properties;
 
 import com.logparse.beans.JDBCProperties;
-import com.logparse.os.OSUtils;
+import com.logparse.utils.OSUtils;
 import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
@@ -36,9 +36,9 @@ public class GetProperties {
             }
             return jdbcProperties;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error("File Not Found Exception: \n" + e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("File was unable to be read: \n" + e);
         }
         return null;
     }

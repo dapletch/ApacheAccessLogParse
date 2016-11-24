@@ -2,6 +2,7 @@ package com.logparse.parse;
 
 import com.logparse.beans.LogRecord;
 import com.logparse.dao.InsertLog;
+import com.logparse.utils.LogUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -63,7 +64,7 @@ public class ParseLog {
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(parseLog.getFile()));
-            String line = null;
+            String line;
 
             Pattern p = Pattern.compile(regexNoRemoteUser, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
             while ((line = br.readLine()) != null) {
@@ -71,7 +72,7 @@ public class ParseLog {
                 Matcher m = p.matcher(line);
                 if (m.find()) {
                     logRecord.setIpAddress(m.group(1));
-                    logRecord.setTimeAccessed(formatDate(m.group(2).substring(1, 27)));
+                    logRecord.setTimeAccessed(LogUtils.formatLogDate(m.group(2).substring(1, 27)));
                     logRecord.setRequest(m.group(3));
                     logRecord.setStatCode(Integer.parseInt(m.group(4)));
                     logRecord.setBytesSent(Integer.parseInt(m.group(5)));
@@ -100,7 +101,7 @@ public class ParseLog {
         if (m.find()) {
             logRecord.setIpAddress(m.group(1));
             logRecord.setRemoteUser(m.group(2));
-            logRecord.setTimeAccessed(formatDate(m.group(3).substring(1, 27)));
+            logRecord.setTimeAccessed(LogUtils.formatLogDate(m.group(3).substring(1, 27)));
             logRecord.setRequest(m.group(4));
             logRecord.setStatCode(Integer.parseInt(m.group(5)));
             logRecord.setBytesSent(Integer.parseInt(m.group(6)));
@@ -108,10 +109,6 @@ public class ParseLog {
             return logRecord;
         }
         return null;
-    }
-
-    private DateTime formatDate(String dateStr) {
-        return DateTime.parse(dateStr, DateTimeFormat.forPattern("dd/MMM/yyyy:HH:mm:ss Z")).toDateTime();
     }
 
     public File getFile() {
