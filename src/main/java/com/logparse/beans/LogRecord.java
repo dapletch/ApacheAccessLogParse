@@ -1,8 +1,6 @@
-package com.logparse.bean;
+package com.logparse.beans;
 
 import org.joda.time.DateTime;
-
-import java.io.File;
 
 /**
  * Created by Seth on 11/17/2016.

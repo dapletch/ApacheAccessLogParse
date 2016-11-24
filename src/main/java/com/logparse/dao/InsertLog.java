@@ -1,8 +1,6 @@
 package com.logparse.dao;
 
-import com.logparse.bean.JDBCProperties;
-import com.logparse.bean.LogRecord;
-import com.logparse.properties.GetProperties;
+import com.logparse.beans.LogRecord;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -15,46 +13,19 @@ public class InsertLog {
 
     private Logger logger = Logger.getLogger(InsertLog.class);
 
-    private GetProperties getJdbcProperties = new GetProperties();
-
-    private JDBCProperties jdbcProperties = null;
+    private Connection connection = null;
 
     private PreparedStatement preparedStatement = null;
 
-    private Connection connection = null;
+    private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
 
     private String insertRecord = "INSERT INTO log_data (ip_address, remote_user, time_accessed, request, stat_cd, bytes_sent, time_entered)"
             + " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        if (jdbcProperties == null) {
-            jdbcProperties = getJdbcProperties.loadJdbcProperties();
-        }
-
-        Connection connection;
-        Class.forName(jdbcProperties.getClassName());
-        connection = DriverManager.getConnection(jdbcProperties.getUrl(), jdbcProperties.getUsername(), jdbcProperties.getPassword());
-        if (connection != null) {
-            logger.info("Database connection established.");
-            return connection;
-        }
-        logger.info("Database connection failed.");
-        return null;
-    }
-
-    private void closeConnection() {
-        try {
-            preparedStatement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void writeLogToDb(List<LogRecord> logRecords) throws SQLException, ClassNotFoundException {
 
         if (connection == null) {
-            connection = getConnection();
+            connection = jdbcConnectionUtils.getConnection();
         }
 
         if (preparedStatement == null) {
@@ -75,6 +46,9 @@ public class InsertLog {
             preparedStatement.execute();
         }
 
-        closeConnection();
+        logger.info("Records written to database.");
+
+        preparedStatement.close();
+        jdbcConnectionUtils.closeConnection();
     }
 }

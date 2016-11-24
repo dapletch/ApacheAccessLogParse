@@ -1,6 +1,6 @@
 package com.logparse.parse;
 
-import com.logparse.bean.LogRecord;
+import com.logparse.beans.LogRecord;
 import com.logparse.dao.InsertLog;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;

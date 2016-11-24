@@ -1,6 +1,6 @@
 package com.logparse.properties;
 
-import com.logparse.bean.JDBCProperties;
+import com.logparse.beans.JDBCProperties;
 import com.logparse.os.OSUtils;
 import org.apache.log4j.Logger;
 
