@@ -6,7 +6,6 @@ import com.logparse.dao.JDBCConnectionUtils;
 import com.logparse.utils.LogUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import java.io.*;
 import java.sql.Connection;
