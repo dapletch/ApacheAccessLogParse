@@ -1,5 +1,6 @@
 package com.logparse.reports;
 
+import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
 import com.logparse.dao.GetTimeAccessedDayCnts;
@@ -22,6 +23,8 @@ public class RunReports {
 
     private TimeAccessedDayPreReqs timeAccessedDayPreReqs = new TimeAccessedDayPreReqs();
 
+    private AvgTimeAccessedDayCnt avgTimeAccessedDayCnt = new AvgTimeAccessedDayCnt();
+
     private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
 
     private List<TimeAccessedDayCnt> timeAccessedDayCntList = new ArrayList<TimeAccessedDayCnt>();
@@ -42,6 +45,8 @@ public class RunReports {
 
         timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(timeAccessedDayPreReqs);
         getTimeAccessedDayCnts.insertDayCntReportToDatabase(timeAccessedDayCntList);
+
+        avgTimeAccessedDayCnt = getTimeAccessedDayCnts.getAvgTimeAccessedDayCnt(timeAccessedDayPreReqs.getMaxTimeEntered());
 
         jdbcConnectionUtils.closeConnection();
     }

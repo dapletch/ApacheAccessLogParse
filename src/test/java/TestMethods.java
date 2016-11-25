@@ -1,3 +1,4 @@
+import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
 import com.logparse.dao.GetTimeAccessedDayCnts;
@@ -18,11 +19,13 @@ public class TestMethods {
 
     private TimeAccessedDayPreReqs timeAccessedDayPreReqs = new TimeAccessedDayPreReqs();
 
+    private AvgTimeAccessedDayCnt avgTimeAccessedDayCnt = new AvgTimeAccessedDayCnt();
+
     private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
 
-    private Connection connection = null;
-
     private List<TimeAccessedDayCnt> timeAccessedDayCntList = new ArrayList<TimeAccessedDayCnt>();
+
+    private Connection connection = null;
 
     /*
     @Test
@@ -59,6 +62,8 @@ public class TestMethods {
 
         timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(timeAccessedDayPreReqs);
         getTimeAccessedDayCnts.insertDayCntReportToDatabase(timeAccessedDayCntList);
+
+        avgTimeAccessedDayCnt = getTimeAccessedDayCnts.getAvgTimeAccessedDayCnt(timeAccessedDayPreReqs.getMaxTimeEntered());
 
         jdbcConnectionUtils.closeConnection();
     }
