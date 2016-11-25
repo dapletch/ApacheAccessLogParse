@@ -1,6 +1,5 @@
 package com.logparse.utils;
 
-import com.logparse.properties.GetProperties;
 import org.apache.log4j.Logger;
 
 /**
@@ -16,7 +15,7 @@ public class OSUtils {
         return (OS.contains("win"));
     }
 
-    private static Logger logger = Logger.getLogger(GetProperties.class);
+    private static Logger logger = Logger.getLogger(OSUtils.class);
 
     public static String getFilePathAboveCurrentOne() {
 

@@ -54,16 +54,16 @@ public class TestMethods {
             connection = jdbcConnectionUtils.getConnection();
         }
 
-        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getMaxTimeEntered();
+        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getMaxTimeEntered(connection);
         System.out.println("Max Time Entered: " + timeAccessedDayPreReqs.getMaxTimeEntered());
 
-        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getTimeAccessedDateRange(timeAccessedDayPreReqs);
+        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getTimeAccessedDateRange(connection, timeAccessedDayPreReqs);
         System.out.println("Prerequisite Date Ranges: " + timeAccessedDayPreReqs.toString());
 
-        timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(timeAccessedDayPreReqs);
-        getTimeAccessedDayCnts.insertDayCntReportToDatabase(timeAccessedDayCntList);
+        timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(connection, timeAccessedDayPreReqs);
+        getTimeAccessedDayCnts.insertDayCntReportToDatabase(connection, timeAccessedDayCntList);
 
-        avgTimeAccessedDayCnt = getTimeAccessedDayCnts.getAvgTimeAccessedDayCnt(timeAccessedDayPreReqs.getMaxTimeEntered());
+        avgTimeAccessedDayCnt = getTimeAccessedDayCnts.getAvgTimeAccessedDayCnt(connection, timeAccessedDayPreReqs.getMaxTimeEntered());
 
         jdbcConnectionUtils.closeConnection();
     }

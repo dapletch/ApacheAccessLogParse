@@ -31,6 +31,10 @@ public class ParseLog {
 
     private InsertLog insertLog = new InsertLog();
 
+    private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
+
+    private Connection connection = null;
+
     private Logger logger = Logger.getLogger(ParseLog.class);
 
     private List<LogRecord> logRecords = new ArrayList<LogRecord>();
@@ -58,8 +62,14 @@ public class ParseLog {
             + "(\\d+)";	// Integer Number 2
 
     public void parseApacheLogFileWriteToDb(ParseLog parseLog) throws SQLException, ClassNotFoundException {
+        if (connection == null) {
+            connection = jdbcConnectionUtils.getConnection();
+        }
+
         logRecords = addLogRecordsToList(parseLog);
-        insertLog.writeLogToDb(logRecords);
+        insertLog.writeLogToDb(connection, logRecords);
+
+        jdbcConnectionUtils.closeConnection();
     }
 
     private List<LogRecord> addLogRecordsToList(ParseLog parseLog) {

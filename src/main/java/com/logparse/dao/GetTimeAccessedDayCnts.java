@@ -23,8 +23,6 @@ public class GetTimeAccessedDayCnts {
 
     private AvgTimeAccessedDayCnt avgTimeAccessedDayCnt = new AvgTimeAccessedDayCnt();
 
-    private Connection connection = null;
-
     private PreparedStatement preparedStatement = null;
 
     private ResultSet resultSet = null;
@@ -102,7 +100,7 @@ public class GetTimeAccessedDayCnts {
             + " from time_accessed_day_cnt\n"
             + " where time_entered = ?;";
 
-    public TimeAccessedDayPreReqs getMaxTimeEntered() throws SQLException, ClassNotFoundException {
+    public TimeAccessedDayPreReqs getMaxTimeEntered(Connection connection) throws SQLException, ClassNotFoundException {
 
         if (connection == null) {
             connection = jdbcConnectionUtils.getConnection();
@@ -117,7 +115,7 @@ public class GetTimeAccessedDayCnts {
         return timeAccessedDayPreReqs;
     }
 
-    public TimeAccessedDayPreReqs getTimeAccessedDateRange(TimeAccessedDayPreReqs timeAccessedDayPreReqs) throws SQLException, ClassNotFoundException {
+    public TimeAccessedDayPreReqs getTimeAccessedDateRange(Connection connection, TimeAccessedDayPreReqs timeAccessedDayPreReqs) throws SQLException, ClassNotFoundException {
 
         preparedStatement = null;
 
@@ -138,7 +136,7 @@ public class GetTimeAccessedDayCnts {
         return timeAccessedDayPreReqs;
     }
 
-    public List<TimeAccessedDayCnt> timeAccessedDayCntReport(TimeAccessedDayPreReqs timeAccessedDayPreReqs) throws SQLException, ClassNotFoundException {
+    public List<TimeAccessedDayCnt> timeAccessedDayCntReport(Connection connection, TimeAccessedDayPreReqs timeAccessedDayPreReqs) throws SQLException, ClassNotFoundException {
 
         DateTime date;
         preparedStatement = null;
@@ -195,7 +193,7 @@ public class GetTimeAccessedDayCnts {
         return timeAccessedDayCntList;
     }
 
-    public void insertDayCntReportToDatabase(List<TimeAccessedDayCnt> timeAccessedDayCntList) throws SQLException, ClassNotFoundException {
+    public void insertDayCntReportToDatabase(Connection connection, List<TimeAccessedDayCnt> timeAccessedDayCntList) throws SQLException, ClassNotFoundException {
 
         preparedStatement = null;
 
@@ -242,7 +240,7 @@ public class GetTimeAccessedDayCnts {
         preparedStatement.close();
     }
 
-    public AvgTimeAccessedDayCnt getAvgTimeAccessedDayCnt(DateTime timeEntered) throws SQLException, ClassNotFoundException {
+    public AvgTimeAccessedDayCnt getAvgTimeAccessedDayCnt(Connection connection, DateTime timeEntered) throws SQLException, ClassNotFoundException {
 
         preparedStatement = null;
 

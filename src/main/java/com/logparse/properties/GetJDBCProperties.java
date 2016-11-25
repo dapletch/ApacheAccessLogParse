@@ -12,9 +12,9 @@ import java.util.Properties;
 /**
  * Created by Seth on 11/22/2016.
  */
-public class GetProperties {
+public class GetJDBCProperties {
 
-    private Logger logger = Logger.getLogger(GetProperties.class);
+    private Logger logger = Logger.getLogger(GetJDBCProperties.class);
 
     public JDBCProperties loadJdbcProperties() {
 

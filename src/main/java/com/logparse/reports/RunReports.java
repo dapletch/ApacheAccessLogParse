@@ -39,16 +39,16 @@ public class RunReports {
             connection = jdbcConnectionUtils.getConnection();
         }
 
-        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getMaxTimeEntered();
+        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getMaxTimeEntered(connection);
         logger.info("Max Time Entered: " + timeAccessedDayPreReqs.getMaxTimeEntered());
 
-        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getTimeAccessedDateRange(timeAccessedDayPreReqs);
+        timeAccessedDayPreReqs = getTimeAccessedDayCnts.getTimeAccessedDateRange(connection, timeAccessedDayPreReqs);
         logger.info("Prerequisite Date Ranges: " + timeAccessedDayPreReqs.toString());
 
-        timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(timeAccessedDayPreReqs);
-        getTimeAccessedDayCnts.insertDayCntReportToDatabase(timeAccessedDayCntList);
+        timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(connection, timeAccessedDayPreReqs);
+        getTimeAccessedDayCnts.insertDayCntReportToDatabase(connection, timeAccessedDayCntList);
 
-        avgTimeAccessedDayCnt = getTimeAccessedDayCnts.getAvgTimeAccessedDayCnt(timeAccessedDayPreReqs.getMaxTimeEntered());
+        avgTimeAccessedDayCnt = getTimeAccessedDayCnts.getAvgTimeAccessedDayCnt(connection, timeAccessedDayPreReqs.getMaxTimeEntered());
         generateHTMLReport.writeReportInfoToHTMLDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
 
         jdbcConnectionUtils.closeConnection();

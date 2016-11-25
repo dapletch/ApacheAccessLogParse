@@ -13,8 +13,6 @@ public class InsertLog {
 
     private Logger logger = Logger.getLogger(InsertLog.class);
 
-    private Connection connection = null;
-
     private PreparedStatement preparedStatement = null;
 
     private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
@@ -25,7 +23,7 @@ public class InsertLog {
     private static final Integer batchSize = 1000;
     private Integer count = 0;
 
-    public void writeLogToDb(List<LogRecord> logRecords) throws SQLException, ClassNotFoundException {
+    public void writeLogToDb(Connection connection, List<LogRecord> logRecords) throws SQLException, ClassNotFoundException {
 
         if (connection == null) {
             connection = jdbcConnectionUtils.getConnection();

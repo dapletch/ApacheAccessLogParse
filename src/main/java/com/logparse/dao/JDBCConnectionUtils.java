@@ -1,7 +1,7 @@
 package com.logparse.dao;
 
 import com.logparse.beans.JDBCProperties;
-import com.logparse.properties.GetProperties;
+import com.logparse.properties.GetJDBCProperties;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -11,9 +11,9 @@ import java.sql.*;
  */
 public class JDBCConnectionUtils {
 
-    private Logger logger = Logger.getLogger(InsertLog.class);
+    private Logger logger = Logger.getLogger(JDBCConnectionUtils.class);
 
-    private GetProperties getJdbcProperties = new GetProperties();
+    private GetJDBCProperties getJdbcProperties = new GetJDBCProperties();
 
     private JDBCProperties jdbcProperties = null;
 
