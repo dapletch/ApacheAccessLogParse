@@ -1,6 +1,7 @@
 package com.logparse;
 
 import com.logparse.parse.ParseLog;
+import com.logparse.reports.RunReports;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
@@ -28,6 +29,12 @@ public class Main {
             logger.info("Time stamp for log records: " + parseLog.getTimeEntered());
             parseLog.parseApacheLogFileWriteToDb(parseLog);
             logger.info("Data Import Completed.");
+
+            logger.info("Starting reporting process now.");
+            RunReports runReports = new RunReports();
+            runReports.getPreReqsRunReports();
+            logger.info("Report has been generated for viewing.");
+
         } else {
             logger.error(errorMessage);
             System.exit(0);

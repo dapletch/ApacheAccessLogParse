@@ -25,6 +25,8 @@ public class RunReports {
 
     private AvgTimeAccessedDayCnt avgTimeAccessedDayCnt = new AvgTimeAccessedDayCnt();
 
+    private GenerateHTMLReport generateHTMLReport = new GenerateHTMLReport();
+
     private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
 
     private List<TimeAccessedDayCnt> timeAccessedDayCntList = new ArrayList<TimeAccessedDayCnt>();
@@ -47,6 +49,7 @@ public class RunReports {
         getTimeAccessedDayCnts.insertDayCntReportToDatabase(timeAccessedDayCntList);
 
         avgTimeAccessedDayCnt = getTimeAccessedDayCnts.getAvgTimeAccessedDayCnt(timeAccessedDayPreReqs.getMaxTimeEntered());
+        generateHTMLReport.writeReportInfoToHTMLDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
 
         jdbcConnectionUtils.closeConnection();
     }

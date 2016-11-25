@@ -282,6 +282,8 @@ public class GetTimeAccessedDayCnts {
             avgTimeAccessedDayCnt.setTwelveAmAvgCnt(resultSet.getInt(24));
             avgTimeAccessedDayCnt.setTotalAvgCnt(resultSet.getInt(25));
         }
+
+        preparedStatement.close();
         return avgTimeAccessedDayCnt;
     }
 }
