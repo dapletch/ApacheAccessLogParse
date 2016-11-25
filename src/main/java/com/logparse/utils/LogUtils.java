@@ -3,6 +3,9 @@ package com.logparse.utils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Seth on 11/24/2016.
  */
@@ -22,5 +25,9 @@ public class LogUtils {
 
     public static Boolean isDateStringValid(String dateStr) {
         return dateStr != null;
+    }
+
+    public static String generateFileTimeStamp() {
+        return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
     }
 }

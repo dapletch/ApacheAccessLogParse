@@ -2,6 +2,7 @@ package com.logparse.reports;
 
 import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
+import com.logparse.utils.LogUtils;
 import com.logparse.utils.OSUtils;
 
 import java.io.BufferedWriter;
@@ -19,10 +20,8 @@ public class GenerateHTMLReport {
 
     public void writeReportInfoToHTMLDocument(List<TimeAccessedDayCnt> timeAccessedDayCntList, AvgTimeAccessedDayCnt avgTimeAccessedDayCnt) {
 
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-
         try {
-            File htmlReport = new File(OSUtils.getFilePathAboveCurrentOne() + "PletcherWebDesignUsage" + timeStamp + ".html");
+            File htmlReport = new File(OSUtils.getFilePathAboveCurrentOne() + "PletcherWebDesignUsage" + LogUtils.generateFileTimeStamp() + ".html");
 
             // if file doesnt exists, then create it
             if (!htmlReport.exists()) {
@@ -36,12 +35,12 @@ public class GenerateHTMLReport {
                     + "<head>\n"
                     + "<meta charset=\"utf-8\">\n"
                     + "<title>PletcherWebDesign Usage Report - "
-                    + timeAccessedDayCntList.get(0).getTimeEntered().toString() + "</title>\n"
+                    + LogUtils.generateFileTimeStamp() + "</title>\n"
                     + "</head>\n"
                     + "<body>\n");
 
             bw.write("<p align=\"center\">This report was generated for the records that were inputted on "
-                    + timeAccessedDayCntList.get(0).getTimeEntered().toString() + "</p>");
+                    + LogUtils.generateFileTimeStamp() + "</p>");
 
             bw.write("<table border=\"1\">\n"
                     + "<tr>\n"

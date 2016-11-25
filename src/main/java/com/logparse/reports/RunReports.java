@@ -27,6 +27,8 @@ public class RunReports {
 
     private GenerateHTMLReport generateHTMLReport = new GenerateHTMLReport();
 
+    private GenerateCSVReport generateCSVReport = new GenerateCSVReport();
+
     private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
 
     private List<TimeAccessedDayCnt> timeAccessedDayCntList = new ArrayList<TimeAccessedDayCnt>();
@@ -50,6 +52,7 @@ public class RunReports {
 
         avgTimeAccessedDayCnt = getTimeAccessedDayCnts.getAvgTimeAccessedDayCnt(connection, timeAccessedDayPreReqs.getMaxTimeEntered());
         generateHTMLReport.writeReportInfoToHTMLDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
+        generateCSVReport.writeReportInfoToCSVDDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
 
         jdbcConnectionUtils.closeConnection();
     }

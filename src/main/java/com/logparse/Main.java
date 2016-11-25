@@ -33,7 +33,7 @@ public class Main {
             logger.info("Starting reporting process now.");
             RunReports runReports = new RunReports();
             runReports.getPreReqsRunReports();
-            logger.info("Report has been generated for viewing.");
+            logger.info("Reports have been generated for viewing.");
 
         } else {
             logger.error(errorMessage);
