@@ -1,11 +1,10 @@
 package com.logparse.dao;
 
-import com.logparse.beans.TimeAccessedDayCnt;
-import com.logparse.beans.TimeAccessedDayPreReqs;
+import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
+import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
 import com.logparse.utils.LogUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -30,39 +29,46 @@ public class GetTimeAccessedDayCnts {
 
     private List<TimeAccessedDayCnt> timeAccessedDayCntList = new ArrayList<TimeAccessedDayCnt>();
 
-    private String getMaxTimeEnteredQuery = "select date(max(time_entered)) as max_time_entered from log_data;";
+    private String getMaxTimeEnteredQuery = "SELECT date(max(time_entered)) AS max_time_entered FROM log_data;";
 
-    private String getTimeAccessedDateRangesQuery = "select date(min(time_accessed)), date(max(time_accessed)) from log_data where date(time_entered) = ?;";
+    private String getTimeAccessedDateRangesQuery = "SELECT date(min(time_accessed)), date(max(time_accessed)) FROM log_data WHERE date(time_entered) = ?;";
 
-    private String getTimeAccessedDayCntReportQuery = "select date(time_accessed) as time_accessed\n"
-            + ", count(case when hour(time_accessed)=1 then 1 else null end) as one_am\n"
-            + ", count(case when hour(time_accessed)=2 then 1 else null end) as two_am\n"
-            + ", count(case when hour(time_accessed)=3 then 1 else null end) as three_am\n"
-            + ", count(case when hour(time_accessed)=4 then 1 else null end) as four_am\n"
-            + ", count(case when hour(time_accessed)=5 then 1 else null end) as five_am\n"
-            + ", count(case when hour(time_accessed)=6 then 1 else null end) as six_am\n"
-            + ", count(case when hour(time_accessed)=7 then 1 else null end) as seven_am\n"
-            + ", count(case when hour(time_accessed)=8 then 1 else null end) as eight_am\n"
-            + ", count(case when hour(time_accessed)=9 then 1 else null end) as nine_am\n"
-            + ", count(case when hour(time_accessed)=10 then 1 else null end) as ten_am\n"
-            + ", count(case when hour(time_accessed)=11 then 1 else null end) as eleven_am\n"
-            + ", count(case when hour(time_accessed)=12 then 1 else null end) as twelve_pm\n"
-            + ", count(case when hour(time_accessed)=13 then 1 else null end) as one_pm\n"
-            + ", count(case when hour(time_accessed)=14 then 1 else null end) as two_pm\n"
-            + ", count(case when hour(time_accessed)=15 then 1 else null end) as three_pm\n"
-            + ", count(case when hour(time_accessed)=16 then 1 else null end) as four_pm\n"
-            + ", count(case when hour(time_accessed)=17 then 1 else null end) as five_pm\n"
-            + ", count(case when hour(time_accessed)=18 then 1 else null end) as six_pm\n"
-            + ", count(case when hour(time_accessed)=19 then 1 else null end) as seven_pm\n"
-            + ", count(case when hour(time_accessed)=20 then 1 else null end) as eight_pm\n"
-            + ", count(case when hour(time_accessed)=21 then 1 else null end) as nine_pm\n"
-            + ", count(case when hour(time_accessed)=22 then 1 else null end) as ten_pm\n"
-            + ", count(case when hour(time_accessed)=23 then 1 else null end) as eleven_pm\n"
-            + ", count(case when hour(time_accessed)=24 then 1 else null end) as twelve_am\n"
-            + ", count(*) as tot_day_cnt\n"
-            + " from log_data\n"
-            + " where date(time_accessed) = ?"
-            + " and date(time_entered) = ?;";
+    private String getTimeAccessedDayCntReportQuery = "SELECT date(time_accessed) AS time_accessed\n"
+            + ", count(CASE WHEN hour(time_accessed)=1 THEN 1 ELSE NULL END) AS one_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=2 THEN 1 ELSE NULL END) AS two_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=3 THEN 1 ELSE NULL END) AS three_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=4 THEN 1 ELSE NULL END) AS four_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=5 THEN 1 ELSE NULL END) AS five_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=6 THEN 1 ELSE NULL END) AS six_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=7 THEN 1 ELSE NULL END) AS seven_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=8 THEN 1 ELSE NULL END) AS eight_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=9 THEN 1 ELSE NULL END) AS nine_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=10 THEN 1 ELSE NULL END) AS ten_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=11 THEN 1 ELSE NULL END) AS eleven_am\n"
+            + ", count(CASE WHEN hour(time_accessed)=12 THEN 1 ELSE NULL END) AS twelve_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=13 THEN 1 ELSE NULL END) AS one_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=14 THEN 1 ELSE NULL END) AS two_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=15 THEN 1 ELSE NULL END) AS three_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=16 THEN 1 ELSE NULL END) AS four_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=17 THEN 1 ELSE NULL END) AS five_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=18 THEN 1 ELSE NULL END) AS six_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=19 THEN 1 ELSE NULL END) AS seven_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=20 THEN 1 ELSE NULL END) AS eight_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=21 THEN 1 ELSE NULL END) AS nine_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=22 THEN 1 ELSE NULL END) AS ten_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=23 THEN 1 ELSE NULL END) AS eleven_pm\n"
+            + ", count(CASE WHEN hour(time_accessed)=24 THEN 1 ELSE NULL END) AS twelve_am\n"
+            + ", count(*) AS tot_day_cnt\n"
+            + " FROM log_data\n"
+            + " WHERE date(time_accessed) = ?"
+            + " AND date(time_entered) = ?;";
+
+    private String insertTimeAccessedDayReport = "INSERT INTO time_accessed_day_cnt (\n"
+            + " time_accessed, one_am, two_am, three_am, four_am, five_am, six_am, seven_am\n"
+            + " , eight_am, nine_am, ten_am, eleven_am, twelve_pm, one_pm, two_pm, three_pm\n"
+            + " , four_pm, five_pm, six_pm, seven_pm, eight_pm, nine_pm, ten_pm, eleven_pm\n"
+            + " , twelve_am, tot_day_cnt, time_entered\n"
+            + " ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     public TimeAccessedDayPreReqs getMaxTimeEntered() throws SQLException, ClassNotFoundException {
 
@@ -151,9 +157,57 @@ public class GetTimeAccessedDayCnts {
                 timeAccessedDayCnt.setTotalDayCnt(resultSet.getInt(26));
                 timeAccessedDayCnt.setTimeEntered(timeAccessedDayPreReqs.getMaxTimeEntered());
             }
-            logger.info(timeAccessedDayCnt.toString());
+            //logger.info(timeAccessedDayCnt.toString());
             timeAccessedDayCntList.add(timeAccessedDayCnt);
         }
         return timeAccessedDayCntList;
     }
+
+    public void insertDayCntReportToDatabase(List<TimeAccessedDayCnt> timeAccessedDayCntList) throws SQLException, ClassNotFoundException {
+
+        preparedStatement = null;
+
+        if (connection == null) {
+            connection = jdbcConnectionUtils.getConnection();
+        }
+        if (preparedStatement == null) {
+            preparedStatement = connection.prepareStatement(insertTimeAccessedDayReport);
+        }
+
+        for (TimeAccessedDayCnt dayCnt : timeAccessedDayCntList) {
+            preparedStatement.clearParameters();
+            preparedStatement.setDate(1, LogUtils.dateTimeToSqlDate(dayCnt.getTimeAccessed()));
+            preparedStatement.setInt(2, dayCnt.getOneAm());
+            preparedStatement.setInt(3, dayCnt.getTwoAm());
+            preparedStatement.setInt(4, dayCnt.getThreeAm());
+            preparedStatement.setInt(5, dayCnt.getFourAm());
+            preparedStatement.setInt(6, dayCnt.getFiveAm());
+            preparedStatement.setInt(7, dayCnt.getSixAm());
+            preparedStatement.setInt(8, dayCnt.getSevenAm());
+            preparedStatement.setInt(9, dayCnt.getEightAm());
+            preparedStatement.setInt(10, dayCnt.getNineAm());
+            preparedStatement.setInt(11, dayCnt.getTenAm());
+            preparedStatement.setInt(12, dayCnt.getElevenAm());
+            preparedStatement.setInt(13, dayCnt.getTwelveAm());
+            preparedStatement.setInt(14, dayCnt.getOnePm());
+            preparedStatement.setInt(15, dayCnt.getTwoPm());
+            preparedStatement.setInt(16, dayCnt.getThreePm());
+            preparedStatement.setInt(17, dayCnt.getFourPm());
+            preparedStatement.setInt(18, dayCnt.getFivePm());
+            preparedStatement.setInt(19, dayCnt.getSixPm());
+            preparedStatement.setInt(20, dayCnt.getSevenPm());
+            preparedStatement.setInt(21, dayCnt.getEightPm());
+            preparedStatement.setInt(22, dayCnt.getNinePm());
+            preparedStatement.setInt(23, dayCnt.getTenPm());
+            preparedStatement.setInt(24, dayCnt.getElevenPm());
+            preparedStatement.setInt(25, dayCnt.getTwelveAm());
+            preparedStatement.setInt(26, dayCnt.getTotalDayCnt());
+            preparedStatement.setDate(27, LogUtils.dateTimeToSqlDate(dayCnt.getTimeEntered()));
+            preparedStatement.execute();
+        }
+
+        logger.info("Records written to database.");
+        preparedStatement.close();
+    }
 }
+

@@ -1,4 +1,4 @@
-package com.logparse.beans;
+package com.logparse.beans.timeaccessed;
 
 import org.joda.time.DateTime;
 

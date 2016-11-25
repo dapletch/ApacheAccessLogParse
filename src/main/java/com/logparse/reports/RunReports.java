@@ -1,7 +1,7 @@
 package com.logparse.reports;
 
-import com.logparse.beans.TimeAccessedDayCnt;
-import com.logparse.beans.TimeAccessedDayPreReqs;
+import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
+import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
 import com.logparse.dao.GetTimeAccessedDayCnts;
 import com.logparse.dao.JDBCConnectionUtils;
 import org.apache.log4j.Logger;
@@ -41,6 +41,7 @@ public class RunReports {
         logger.info("Prerequisite Date Ranges: " + timeAccessedDayPreReqs.toString());
 
         timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(timeAccessedDayPreReqs);
+        getTimeAccessedDayCnts.insertDayCntReportToDatabase(timeAccessedDayCntList);
 
         jdbcConnectionUtils.closeConnection();
     }

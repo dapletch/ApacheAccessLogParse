@@ -36,9 +36,9 @@ public class GetProperties {
             }
             return jdbcProperties;
         } catch (FileNotFoundException e) {
-            logger.error("File Not Found Exception: \n" + e);
+            logger.error("File Not Found Exception: \n", e);
         } catch (IOException e) {
-            logger.error("File was unable to be read: \n" + e);
+            logger.error("File was unable to be read: \n", e);
         }
         return null;
     }

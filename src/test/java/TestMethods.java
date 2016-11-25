@@ -1,11 +1,8 @@
-import com.logparse.beans.TimeAccessedDayCnt;
-import com.logparse.beans.TimeAccessedDayPreReqs;
+import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
+import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
 import com.logparse.dao.GetTimeAccessedDayCnts;
 import com.logparse.dao.JDBCConnectionUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -55,13 +52,13 @@ public class TestMethods {
         }
 
         timeAccessedDayPreReqs = getTimeAccessedDayCnts.getMaxTimeEntered();
-
         System.out.println("Max Time Entered: " + timeAccessedDayPreReqs.getMaxTimeEntered());
 
         timeAccessedDayPreReqs = getTimeAccessedDayCnts.getTimeAccessedDateRange(timeAccessedDayPreReqs);
         System.out.println("Prerequisite Date Ranges: " + timeAccessedDayPreReqs.toString());
 
         timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(timeAccessedDayPreReqs);
+        getTimeAccessedDayCnts.insertDayCntReportToDatabase(timeAccessedDayCntList);
 
         jdbcConnectionUtils.closeConnection();
     }
