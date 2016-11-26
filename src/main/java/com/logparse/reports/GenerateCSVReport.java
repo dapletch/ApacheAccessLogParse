@@ -71,7 +71,7 @@ public class GenerateCSVReport {
                          + timeAccessedDayCnt.getNineAm() + ","
                          + timeAccessedDayCnt.getTenAm() + ","
                          + timeAccessedDayCnt.getElevenAm() + ","
-                         + timeAccessedDayCnt.getTwelveAm() + ","
+                         + timeAccessedDayCnt.getTwelvePm() + ","
                          + timeAccessedDayCnt.getOnePm() + ","
                          + timeAccessedDayCnt.getTwoPm() + ","
                          + timeAccessedDayCnt.getThreePm() + ","
