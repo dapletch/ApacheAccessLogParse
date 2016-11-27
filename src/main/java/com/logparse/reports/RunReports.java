@@ -1,10 +1,15 @@
 package com.logparse.reports;
 
+import com.logparse.beans.IpAddress;
+import com.logparse.beans.ipaddresslocation.IpAddressLocation;
 import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
+import com.logparse.dao.DistinctIpAddress;
 import com.logparse.dao.GetTimeAccessedDayCnts;
+import com.logparse.dao.InsertIpAddressLocation;
 import com.logparse.dao.JDBCConnectionUtils;
+import com.logparse.geolocation.GeoLocation;
 import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,7 +35,17 @@ public class RunReports {
 
     private JDBCConnectionUtils jdbcConnectionUtils = new JDBCConnectionUtils();
 
+    private DistinctIpAddress distinctIpAddress = new DistinctIpAddress();
+
+    private GeoLocation geoLocation = new GeoLocation();
+
+    private InsertIpAddressLocation insertIpAddressLocation = new InsertIpAddressLocation();
+
     private List<TimeAccessedDayCnt> timeAccessedDayCntList = new ArrayList<TimeAccessedDayCnt>();
+
+    private List<IpAddress> distinctIpAddressList = new ArrayList<IpAddress>();
+
+    private List<IpAddressLocation> ipAddressLocationList = new ArrayList<IpAddressLocation>();
 
     private Connection connection = null;
 
@@ -40,16 +55,29 @@ public class RunReports {
             connection = jdbcConnectionUtils.getConnection();
         }
 
+        // Get the the most recent time entered
         timeAccessedDayPreReqs = getTimeAccessedDayCnts.getMaxTimeEntered(connection);
         logger.info("Max Time Entered: " + timeAccessedDayPreReqs.getMaxTimeEntered());
 
+        // Get the date ranges for the time accessed to be looped over
         timeAccessedDayPreReqs = getTimeAccessedDayCnts.getTimeAccessedDateRange(connection, timeAccessedDayPreReqs);
         logger.info("Prerequisite Date Ranges: " + timeAccessedDayPreReqs.toString());
 
+        // Get counts for each hour of each day spanning the min and max time_accessed
         timeAccessedDayCntList = getTimeAccessedDayCnts.timeAccessedDayCntReport(connection, timeAccessedDayPreReqs);
+        // Insert the counts for hours of each day into time_accessed_day_cnt
         getTimeAccessedDayCnts.insertDayCntReportToDatabase(connection, timeAccessedDayCntList);
 
+        // Obtain the averages for each hour of each day and for the days themselves
         avgTimeAccessedDayCnt = getTimeAccessedDayCnts.getAvgTimeAccessedDayCnt(connection, timeAccessedDayPreReqs.getMaxTimeEntered());
+
+        // Get the list of distinct ip_addresses from the ip_cnt view
+        distinctIpAddressList = distinctIpAddress.distinctIpAddresses(connection);
+        // get the location data for the ip_addresses using the external dat file.
+        ipAddressLocationList = geoLocation.getLocation(distinctIpAddressList);
+        // insert the the location data for the ip_addresses
+        insertIpAddressLocation.insertIpAddressLocationData(connection, ipAddressLocationList);
+
         generateHTMLReport.writeReportInfoToHTMLDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
         generateCSVReport.writeReportInfoToCSVDDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
 

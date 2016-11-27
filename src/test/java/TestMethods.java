@@ -3,10 +3,10 @@ import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
 import com.logparse.dao.GetTimeAccessedDayCnts;
 import com.logparse.dao.JDBCConnectionUtils;
+import com.logparse.geolocation.GeoLocation;
 import org.junit.Test;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +48,7 @@ public class TestMethods {
     }
     */
 
+    /*
     @Test
     public void getPreRequisiteDates() throws SQLException, ClassNotFoundException {
         if (connection == null) {
@@ -67,4 +68,5 @@ public class TestMethods {
 
         jdbcConnectionUtils.closeConnection();
     }
+    */
 }

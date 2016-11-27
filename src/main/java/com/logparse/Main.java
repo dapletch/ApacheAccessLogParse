@@ -2,6 +2,7 @@ package com.logparse;
 
 import com.logparse.parse.ParseLog;
 import com.logparse.reports.RunReports;
+import com.logparse.utils.LogUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
@@ -19,7 +20,7 @@ public class Main {
         if (args.length == 1) {
             File file = new File(args[0]);
 
-            if (!isFileValid(file)) {
+            if (!LogUtils.isFileValid(file)) {
                 logger.error(errorMessage);
                 System.exit(0);
             }
@@ -40,14 +41,5 @@ public class Main {
             logger.error(errorMessage);
             System.exit(0);
         }
-    }
-
-    private static Boolean isFileValid(File file) {
-        if (file.exists()
-                && !file.isDirectory()
-                && file.isFile()) {
-            return true;
-        }
-        return false;
     }
 }

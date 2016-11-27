@@ -3,6 +3,8 @@ package com.logparse.utils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import java.io.File;
+import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,5 +31,16 @@ public class LogUtils {
 
     public static String generateFileTimeStamp() {
         return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
+    }
+
+    public static Boolean isFileValid(File file) {
+        return file.exists()
+                && !file.isDirectory()
+                && file.isFile();
+    }
+
+    public static java.sql.Timestamp getCurrentTimeStamp() {
+        java.util.Date today = new java.util.Date();
+        return new java.sql.Timestamp(today.getTime());
     }
 }
