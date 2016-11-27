@@ -19,8 +19,6 @@ public class JDBCConnectionUtils {
 
     private Connection connection = null;
 
-    private PreparedStatement preparedStatement = null;
-
     public Connection getConnection() throws SQLException, ClassNotFoundException {
         if (jdbcProperties == null) {
             jdbcProperties = getJdbcProperties.loadJdbcProperties();
@@ -32,7 +30,7 @@ public class JDBCConnectionUtils {
             logger.info("Database connection established.");
             return connection;
         }
-        logger.info("Database connection failed.");
+        logger.error("Database connection failed.");
         return null;
     }
 

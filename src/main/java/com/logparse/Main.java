@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class Main {
@@ -14,7 +15,7 @@ public class Main {
 
     private static final String errorMessage = "Please enter a valid file to be parsed, and try again.";
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
         if (args.length == 1) {
             File file = new File(args[0]);
 

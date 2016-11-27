@@ -1,6 +1,7 @@
 package com.logparse.parse;
 
 import com.logparse.beans.LogRecord;
+import com.logparse.dao.BackUpDeleteReportData;
 import com.logparse.dao.InsertLog;
 import com.logparse.dao.JDBCConnectionUtils;
 import com.logparse.utils.LogUtils;
@@ -60,10 +61,14 @@ public class ParseLog {
             + ".*?"	// Non-greedy match on filler
             + "(\\d+)";	// Integer Number 2
 
-    public void parseApacheLogFileWriteToDb(ParseLog parseLog) throws SQLException, ClassNotFoundException {
+    public void parseApacheLogFileWriteToDb(ParseLog parseLog) throws SQLException, ClassNotFoundException, IOException {
         if (connection == null) {
             connection = jdbcConnectionUtils.getConnection();
         }
+        // Back up the log_data and time_accessed_day_cnt tables before proceeding
+        BackUpDeleteReportData backUpDeleteReportData = new BackUpDeleteReportData();
+        backUpDeleteReportData.backUpTruncateLogData(connection);
+        logger.info("log_data and time_accessed_day_cnt tables have been been dumped to delimited text files and truncated.");
 
         logRecords = addLogRecordsToList(parseLog);
         insertLog.writeLogToDb(connection, logRecords);
