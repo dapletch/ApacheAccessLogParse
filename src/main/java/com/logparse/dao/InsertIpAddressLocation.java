@@ -1,13 +1,12 @@
 package com.logparse.dao;
 
 import com.logparse.beans.ipaddresslocation.IpAddressLocation;
+import com.logparse.dao.jdbc.JDBCConnectionUtils;
 import com.logparse.utils.LogUtils;
-import com.mysql.jdbc.log.Log;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 /**

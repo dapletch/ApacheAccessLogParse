@@ -1,4 +1,4 @@
-package com.logparse.beans;
+package com.logparse.beans.ipaddresslocation;
 
 /**
  * Created by Seth on 11/27/2016.

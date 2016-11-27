@@ -1,6 +1,6 @@
 package com.logparse.geolocation;
 
-import com.logparse.beans.IpAddress;
+import com.logparse.beans.ipaddresslocation.IpAddress;
 import com.logparse.beans.ipaddresslocation.IpAddressLocation;
 import com.logparse.utils.LogUtils;
 import com.logparse.utils.OSUtils;

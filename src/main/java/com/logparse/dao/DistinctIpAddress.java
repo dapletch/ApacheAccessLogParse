@@ -1,6 +1,7 @@
 package com.logparse.dao;
 
-import com.logparse.beans.IpAddress;
+import com.logparse.beans.ipaddresslocation.IpAddress;
+import com.logparse.dao.jdbc.JDBCConnectionUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

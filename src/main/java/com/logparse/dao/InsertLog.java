@@ -1,6 +1,7 @@
 package com.logparse.dao;
 
 import com.logparse.beans.LogRecord;
+import com.logparse.dao.jdbc.JDBCConnectionUtils;
 import org.apache.log4j.Logger;
 
 import java.sql.*;

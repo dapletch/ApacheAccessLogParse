@@ -1,4 +1,4 @@
-package com.logparse.dao;
+package com.logparse.dao.jdbc;
 
 import com.logparse.beans.JDBCProperties;
 import com.logparse.properties.GetJDBCProperties;

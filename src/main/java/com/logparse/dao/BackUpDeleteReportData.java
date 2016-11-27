@@ -1,9 +1,9 @@
 package com.logparse.dao;
 
+import com.logparse.dao.jdbc.JDBCConnectionUtils;
 import com.logparse.utils.LogUtils;
 import com.logparse.utils.OSUtils;
 
-import javax.naming.CompositeName;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

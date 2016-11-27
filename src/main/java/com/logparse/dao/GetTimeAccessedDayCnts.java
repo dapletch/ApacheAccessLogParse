@@ -3,8 +3,8 @@ package com.logparse.dao;
 import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
+import com.logparse.dao.jdbc.JDBCConnectionUtils;
 import com.logparse.utils.LogUtils;
-import com.sun.org.apache.regexp.internal.RESyntaxException;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 

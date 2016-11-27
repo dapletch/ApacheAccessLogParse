@@ -1,6 +1,6 @@
 package com.logparse.reports;
 
-import com.logparse.beans.IpAddress;
+import com.logparse.beans.ipaddresslocation.IpAddress;
 import com.logparse.beans.ipaddresslocation.IpAddressLocation;
 import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
@@ -8,7 +8,7 @@ import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
 import com.logparse.dao.DistinctIpAddress;
 import com.logparse.dao.GetTimeAccessedDayCnts;
 import com.logparse.dao.InsertIpAddressLocation;
-import com.logparse.dao.JDBCConnectionUtils;
+import com.logparse.dao.jdbc.JDBCConnectionUtils;
 import com.logparse.geolocation.GeoLocation;
 import org.apache.log4j.Logger;
 import java.sql.Connection;
