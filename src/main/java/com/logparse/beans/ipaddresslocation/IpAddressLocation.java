@@ -19,6 +19,7 @@ public class IpAddressLocation {
     private Integer dmaCode;
     private Integer areaCode;
     private Integer metroCode;
+    private Integer totalCnt;
 
     public IpAddressLocation() {
         super();
@@ -120,6 +121,14 @@ public class IpAddressLocation {
         this.metroCode = metroCode;
     }
 
+    public Integer getTotalCnt() {
+        return totalCnt;
+    }
+
+    public void setTotalCnt(Integer totalCnt) {
+        this.totalCnt = totalCnt;
+    }
+
     @Override
     public String toString() {
         return "IpAddressLocation{" +
@@ -135,6 +144,7 @@ public class IpAddressLocation {
                 ", dmaCode=" + dmaCode +
                 ", areaCode=" + areaCode +
                 ", metroCode=" + metroCode +
+                ", totalCnt=" + totalCnt +
                 '}';
     }
 }

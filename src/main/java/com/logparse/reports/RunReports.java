@@ -8,6 +8,7 @@ import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
 import com.logparse.dao.DistinctIpAddress;
 import com.logparse.dao.GetTimeAccessedDayCnts;
 import com.logparse.dao.InsertIpAddressLocation;
+import com.logparse.dao.IpAddressLocationCnts;
 import com.logparse.dao.jdbc.JDBCConnectionUtils;
 import com.logparse.geolocation.GeoLocation;
 import org.apache.log4j.Logger;
@@ -41,11 +42,15 @@ public class RunReports {
 
     private InsertIpAddressLocation insertIpAddressLocation = new InsertIpAddressLocation();
 
+    private IpAddressLocationCnts ipAddressLocationCnts = new IpAddressLocationCnts();
+
     private List<TimeAccessedDayCnt> timeAccessedDayCntList = new ArrayList<TimeAccessedDayCnt>();
 
     private List<IpAddress> distinctIpAddressList = new ArrayList<IpAddress>();
 
     private List<IpAddressLocation> ipAddressLocationList = new ArrayList<IpAddressLocation>();
+
+    private List<IpAddressLocation> ipAddressLocationCntsList = new ArrayList<IpAddressLocation>();
 
     private Connection connection = null;
 
@@ -77,6 +82,9 @@ public class RunReports {
         ipAddressLocationList = geoLocation.getLocation(distinctIpAddressList);
         // insert the the location data for the ip_addresses
         insertIpAddressLocation.insertIpAddressLocationData(connection, ipAddressLocationList);
+
+        // Getting the total counts by using ip_cnt view with ip_address_location_table
+        ipAddressLocationCntsList = ipAddressLocationCnts.getIpAddressCnt(connection);
 
         generateHTMLReport.writeReportInfoToHTMLDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
         generateCSVReport.writeReportInfoToCSVDDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
