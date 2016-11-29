@@ -22,6 +22,9 @@ public class InsertIpAddressLocation {
             ", city, postal_code, latitude, longitude, dma_code, area_code, metro_code, date_entered) \n" +
             "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
+    private static final Integer batchSize = 1000;
+    private Integer count = 0;
+
     public void insertIpAddressLocationData(Connection connection, List<IpAddressLocation> ipAddressLocationList) throws SQLException, ClassNotFoundException {
 
         preparedStatement = null;
@@ -36,6 +39,8 @@ public class InsertIpAddressLocation {
         java.sql.Timestamp timestamp = LogUtils.getCurrentTimeStamp();
 
         for (IpAddressLocation ipAddressLocation : ipAddressLocationList) {
+            // Set auto commit to false to allow the batch statement to work properly
+            connection.setAutoCommit(false);
             preparedStatement.clearParameters();
             preparedStatement.setString(1 , ipAddressLocation.getIpAddress());
             preparedStatement.setString(2, ipAddressLocation.getCountryCode());
@@ -50,9 +55,21 @@ public class InsertIpAddressLocation {
             preparedStatement.setInt(11, ipAddressLocation.getAreaCode());
             preparedStatement.setInt(12, ipAddressLocation.getMetroCode());
             preparedStatement.setTimestamp(13, timestamp);
-            preparedStatement.execute();
+            preparedStatement.addBatch();
+
+            if (++count % batchSize == 0) {
+                preparedStatement.executeBatch();
+                connection.setAutoCommit(true);
+            }
         }
 
+        if (!connection.getAutoCommit()) {
+            // Set auto commit back to true to submit the rest of the remaining records
+            connection.setAutoCommit(true);
+        }
+
+        // Insert the remaining records
+        preparedStatement.executeBatch();
         preparedStatement.close();
     }
 }

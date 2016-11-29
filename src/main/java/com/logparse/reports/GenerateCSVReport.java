@@ -1,5 +1,6 @@
 package com.logparse.reports;
 
+import com.logparse.beans.ipaddresslocation.IpAddressLocation;
 import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.utils.LogUtils;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class GenerateCSVReport {
 
-    public void writeReportInfoToCSVDDocument(List<TimeAccessedDayCnt> timeAccessedDayCntList, AvgTimeAccessedDayCnt avgTimeAccessedDayCnt) {
+    public void writeTimeAccessedDayCntReportInfoToCSVDDocument(List<TimeAccessedDayCnt> timeAccessedDayCntList, AvgTimeAccessedDayCnt avgTimeAccessedDayCnt) {
 
         try {
             File csvReport = new File(OSUtils.getFilePathAboveCurrentOne() + "PletcherWebDesignUsage" + LogUtils.generateFileTimeStamp() + ".csv");
@@ -113,6 +114,54 @@ public class GenerateCSVReport {
                     + avgTimeAccessedDayCnt.getTenPmAvgCnt() + ","
                     + avgTimeAccessedDayCnt.getElevenPmAvgCnt() + ","
                     + avgTimeAccessedDayCnt.getTotalAvgCnt() + "\n");
+
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeIpAccessLocationCntInfoToTxtDocument(List<IpAddressLocation> ipAddressLocationList) {
+        try {
+            File ipAddressLocationCsv = new File(OSUtils.getFilePathAboveCurrentOne() + "IpAddressLocationCnt" + LogUtils.generateFileTimeStamp() + ".txt");
+
+            // if file doesnt exists, then create it
+            if (!ipAddressLocationCsv.exists()) {
+                ipAddressLocationCsv.createNewFile();
+            }
+
+            FileWriter fw = new FileWriter(ipAddressLocationCsv.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            bw.write("IP Address|"
+                    + "Country Code|"
+                    + "Country Name|"
+                    + "Region|"
+                    + "Region Name|"
+                    + "City|"
+                    + "Postal Code|"
+                    + "Latitude|"
+                    + "Longitude|"
+                    + "DMA Code|"
+                    + "Area Code|"
+                    + "Metro Code|"
+                    + "Total Count\n");
+
+            for (IpAddressLocation ipAddressLocation : ipAddressLocationList) {
+                bw.write(ipAddressLocation.getIpAddress() + "|"
+                        + ipAddressLocation.getCountryCode() + "|"
+                        + ipAddressLocation.getCountryName() + "|"
+                        + ipAddressLocation.getRegion() + "|"
+                        + ipAddressLocation.getRegionName() + "|"
+                        + ipAddressLocation.getCity() + "|"
+                        + ipAddressLocation.getPostalCode() + "|"
+                        + ipAddressLocation.getLatitude() + "|"
+                        + ipAddressLocation.getLongitude() + "|"
+                        + ipAddressLocation.getDmaCode() + "|"
+                        + ipAddressLocation.getAreaCode() + "|"
+                        + ipAddressLocation.getMetroCode() + "|"
+                        + ipAddressLocation.getTotalCnt() + "\n");
+            }
 
             bw.close();
         } catch (IOException e) {

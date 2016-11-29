@@ -87,7 +87,9 @@ public class RunReports {
         ipAddressLocationCntsList = ipAddressLocationCnts.getIpAddressCnt(connection);
 
         generateHTMLReport.writeReportInfoToHTMLDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
-        generateCSVReport.writeReportInfoToCSVDDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
+        generateCSVReport.writeTimeAccessedDayCntReportInfoToCSVDDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
+        // originally meant to be a csv but the commas in the country made the csv document format incorrect
+        generateCSVReport.writeIpAccessLocationCntInfoToTxtDocument(ipAddressLocationCntsList);
 
         jdbcConnectionUtils.closeConnection();
     }

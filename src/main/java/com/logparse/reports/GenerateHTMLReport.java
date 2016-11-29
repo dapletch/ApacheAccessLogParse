@@ -101,7 +101,8 @@ public class GenerateHTMLReport {
                         + "<td>" + timeAccessedDayCnt.getTimeEntered() + "</td></tr>\n");
             }
 
-            bw.write("<tr><td><b>Hourly Averages</b></td><td>" + avgTimeAccessedDayCnt.getTwelveAmAvgCnt() + "</td>\n"
+            bw.write("<tr><td><b>Hourly Averages</b></td>\n"
+                    + "<td>" + avgTimeAccessedDayCnt.getTwelveAmAvgCnt() + "</td>\n"
                     + "<td>" + avgTimeAccessedDayCnt.getOneAmAvgCnt() + "</td>\n"
                     + "<td>" + avgTimeAccessedDayCnt.getTwoAmAvgCnt() + "</td>\n"
                     + "<td>" + avgTimeAccessedDayCnt.getThreeAmAvgCnt() + "</td>\n"
@@ -125,7 +126,8 @@ public class GenerateHTMLReport {
                     + "<td>" + avgTimeAccessedDayCnt.getNinePmAvgCnt() + "</td>\n"
                     + "<td>" + avgTimeAccessedDayCnt.getTenPmAvgCnt() + "</td>\n"
                     + "<td>" + avgTimeAccessedDayCnt.getElevenPmAvgCnt() + "</td>\n"
-                    + "<td>" + avgTimeAccessedDayCnt.getTotalAvgCnt() + "</td><td></td></tr>\n");
+                    + "<td>" + avgTimeAccessedDayCnt.getTotalAvgCnt()
+                    + "</td><td></td></tr></table>\n");
 
             bw.write("</body>\n"
                     + "</html>");
