@@ -1,8 +1,8 @@
 package com.logparse.parse;
 
 import com.logparse.beans.LogRecord;
-import com.logparse.dao.BackUpDeleteReportData;
-import com.logparse.dao.InsertLog;
+import com.logparse.dao.logparse.BackUpDeleteReportData;
+import com.logparse.dao.logparse.InsertLog;
 import com.logparse.dao.jdbc.JDBCConnectionUtils;
 import com.logparse.utils.LogUtils;
 import org.apache.log4j.Logger;

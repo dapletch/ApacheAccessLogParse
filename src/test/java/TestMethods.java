@@ -1,7 +1,7 @@
 import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
-import com.logparse.dao.GetTimeAccessedDayCnts;
+import com.logparse.dao.timeaccessed.GetTimeAccessedDayCnts;
 import com.logparse.dao.jdbc.JDBCConnectionUtils;
 
 import java.sql.Connection;

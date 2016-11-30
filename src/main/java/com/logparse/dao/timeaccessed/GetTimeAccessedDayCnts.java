@@ -1,4 +1,4 @@
-package com.logparse.dao;
+package com.logparse.dao.timeaccessed;
 
 import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;

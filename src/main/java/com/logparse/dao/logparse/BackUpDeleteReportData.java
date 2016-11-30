@@ -1,4 +1,4 @@
-package com.logparse.dao;
+package com.logparse.dao.logparse;
 
 import com.logparse.dao.jdbc.JDBCConnectionUtils;
 import com.logparse.utils.LogUtils;

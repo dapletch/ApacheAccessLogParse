@@ -1,4 +1,4 @@
-package com.logparse.dao;
+package com.logparse.dao.ipaddresslocation;
 
 import com.logparse.beans.ipaddresslocation.IpAddress;
 import com.logparse.dao.jdbc.JDBCConnectionUtils;
