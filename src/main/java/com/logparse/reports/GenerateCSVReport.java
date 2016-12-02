@@ -1,5 +1,6 @@
 package com.logparse.reports;
 
+import com.logparse.beans.ipaddresslocation.IpAddressCntByCntry;
 import com.logparse.beans.ipaddresslocation.IpAddressLocation;
 import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
@@ -161,6 +162,40 @@ public class GenerateCSVReport {
                         + ipAddressLocation.getAreaCode() + "|"
                         + ipAddressLocation.getMetroCode() + "|"
                         + ipAddressLocation.getTotalCnt() + "\n");
+            }
+
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeIpAccessCntryCntInfoToTxtDocument(List<IpAddressCntByCntry> ipAddressCntByCntryList) {
+        try {
+            File ipAddressCntryTxt = new File(OSUtils.getFilePathAboveCurrentOne() + "IpAddressCntry" + LogUtils.generateFileTimeStamp() + ".txt");
+
+            // if file doesnt exists, then create it
+            if (!ipAddressCntryTxt.exists()) {
+                ipAddressCntryTxt.createNewFile();
+            }
+
+            FileWriter fw = new FileWriter(ipAddressCntryTxt.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            bw.write("Country Name|"
+                    + "Country Code|"
+                    + "Region Name|"
+                    + "Region|"
+                    + "City|"
+                    + "Distinct IP Address Cnt\n");
+
+            for (IpAddressCntByCntry ipAddressCntByCntry : ipAddressCntByCntryList) {
+                bw.write(ipAddressCntByCntry.getCountryName() + "|"
+                        + ipAddressCntByCntry.getCountryCode() + "|"
+                        + ipAddressCntByCntry.getRegionName() + "|"
+                        + ipAddressCntByCntry.getRegion() + "|"
+                        + ipAddressCntByCntry.getCity() + "|"
+                        + ipAddressCntByCntry.getDistinctIpCnt() + "\n");
             }
 
             bw.close();

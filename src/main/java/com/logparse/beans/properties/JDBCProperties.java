@@ -1,4 +1,4 @@
-package com.logparse.beans;
+package com.logparse.beans.properties;
 
 /**
  * Created by Seth on 11/22/2016.

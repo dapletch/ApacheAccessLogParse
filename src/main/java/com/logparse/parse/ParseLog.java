@@ -96,7 +96,7 @@ public class ParseLog {
                     logRecords.add(logRecord);
                     //logger.info("Log Record no remote user: " + logRecord.toString());
                 } else {
-                    logRecord = logRecordRemoteUserIncluded(logRecord, parseLog.getTimeEntered(), line);
+                    logRecord = logRecordRemoteUserIncluded(parseLog.getTimeEntered(), line);
                     if (logRecord != null) {
                         logRecords.add(logRecord);
                         //logger.info("Log Record with remote user: " + logRecord.toString());
@@ -111,9 +111,10 @@ public class ParseLog {
         return logRecords;
     }
 
-    private LogRecord logRecordRemoteUserIncluded(LogRecord logRecord, DateTime timeEntered, String line) {
+    private LogRecord logRecordRemoteUserIncluded(DateTime timeEntered, String line) {
         Pattern p = Pattern.compile(regexRemoteUserIncluded, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
         Matcher m = p.matcher(line);
+        LogRecord logRecord = new LogRecord();
         if (m.find()) {
             logRecord.setIpAddress(m.group(1));
             logRecord.setRemoteUser(m.group(2));

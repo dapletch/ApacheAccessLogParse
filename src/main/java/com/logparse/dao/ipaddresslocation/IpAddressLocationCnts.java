@@ -1,8 +1,8 @@
 package com.logparse.dao.ipaddresslocation;
 
+import com.logparse.beans.ipaddresslocation.IpAddressCntByCntry;
 import com.logparse.beans.ipaddresslocation.IpAddressLocation;
 import com.logparse.dao.jdbc.JDBCConnectionUtils;
-import com.sun.deploy.panel.IProperty;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,6 +24,8 @@ public class IpAddressLocationCnts {
 
     private List<IpAddressLocation> ipAddressLocationList = new ArrayList<IpAddressLocation>();
 
+    private List<IpAddressCntByCntry> ipAddressCntByCntryList = new ArrayList<IpAddressCntByCntry>();
+
     private String getLastDateEnteredQuery = "select max(date_entered) from ip_address_location;";
 
     private String getIpAddressLocationCntsQuery = "select l.ip_address\n"
@@ -43,6 +45,20 @@ public class IpAddressLocationCnts {
             + "inner join ip_cnt a on l.ip_address = a.ip_address\n"
             + "where l.date_entered = ?\n"
             + "order by tot_ip_cnt desc;";
+
+    private String getIpAddressCntsByCntryQuery = "select country_name\n" +
+            ", country_code\n" +
+            ", region_name\n" +
+            ", region\n" +
+            ", city\n" +
+            ", count(distinct ip_address) \n" +
+            "from ip_address_location\n" +
+            "where date_entered = ?\n" +
+            "group by 1, 2, 3, 4, 5\n" +
+            "order by count(distinct ip_address) desc\n" +
+            ", country_name\n" +
+            ", region\n" +
+            ", city;";
 
     public List<IpAddressLocation> getIpAddressCnt (Connection connection) throws SQLException, ClassNotFoundException {
         return getIpAddressLocationCntList(connection, getLastDateEntered(connection));
@@ -99,5 +115,37 @@ public class IpAddressLocationCnts {
 
         preparedStatement.close();
         return ipAddressLocationList;
+    }
+
+    public List<IpAddressCntByCntry> getIpAddressCntryCnts(Connection connection) throws SQLException, ClassNotFoundException {
+        return getIpAddressCntsByCntryList(connection, getLastDateEntered(connection));
+    }
+
+    private List<IpAddressCntByCntry> getIpAddressCntsByCntryList(Connection connection, java.sql.Timestamp lastDateEntered) throws SQLException, ClassNotFoundException {
+
+        preparedStatement = null;
+
+        if (connection == null) {
+            connection = jdbcConnectionUtils.getConnection();
+        }
+        if (preparedStatement == null) {
+            preparedStatement = connection.prepareStatement(getIpAddressCntsByCntryQuery);
+        }
+
+        preparedStatement.setTimestamp(1, lastDateEntered);
+        resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            IpAddressCntByCntry ipAddressCntByCntry = new IpAddressCntByCntry();
+            ipAddressCntByCntry.setCountryName(resultSet.getString(1));
+            ipAddressCntByCntry.setCountryCode(resultSet.getString(2));
+            ipAddressCntByCntry.setRegionName(resultSet.getString(3));
+            ipAddressCntByCntry.setRegion(resultSet.getString(4));
+            ipAddressCntByCntry.setCity(resultSet.getString(5));
+            ipAddressCntByCntry.setDistinctIpCnt(resultSet.getInt(6));
+            ipAddressCntByCntryList.add(ipAddressCntByCntry);
+        }
+        preparedStatement.close();
+        return ipAddressCntByCntryList;
     }
 }

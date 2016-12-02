@@ -1,6 +1,6 @@
 package com.logparse.dao.jdbc;
 
-import com.logparse.beans.JDBCProperties;
+import com.logparse.beans.properties.JDBCProperties;
 import com.logparse.properties.GetJDBCProperties;
 import org.apache.log4j.Logger;
 

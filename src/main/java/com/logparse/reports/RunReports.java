@@ -1,6 +1,7 @@
 package com.logparse.reports;
 
 import com.logparse.beans.ipaddresslocation.IpAddress;
+import com.logparse.beans.ipaddresslocation.IpAddressCntByCntry;
 import com.logparse.beans.ipaddresslocation.IpAddressLocation;
 import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
@@ -52,6 +53,8 @@ public class RunReports {
 
     private List<IpAddressLocation> ipAddressLocationCntsList = new ArrayList<IpAddressLocation>();
 
+    private List<IpAddressCntByCntry> ipAddressCntByCntryList = new ArrayList<IpAddressCntByCntry>();
+
     private Connection connection = null;
 
     public void getPreReqsRunReports() throws SQLException, ClassNotFoundException {
@@ -86,10 +89,15 @@ public class RunReports {
         // Getting the total counts by using ip_cnt view with ip_address_location_table
         ipAddressLocationCntsList = ipAddressLocationCnts.getIpAddressCnt(connection);
 
+        // Getting the country counts by querying ip_address_location table based off the last_date_entered
+        ipAddressCntByCntryList = ipAddressLocationCnts.getIpAddressCntryCnts(connection);
+
         generateHTMLReport.writeReportInfoToHTMLDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
         generateCSVReport.writeTimeAccessedDayCntReportInfoToCSVDDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
         // originally meant to be a csv but the commas in the country made the csv document format incorrect
         generateCSVReport.writeIpAccessLocationCntInfoToTxtDocument(ipAddressLocationCntsList);
+        // creating the ip address country count report
+        generateCSVReport.writeIpAccessCntryCntInfoToTxtDocument(ipAddressCntByCntryList);
 
         jdbcConnectionUtils.closeConnection();
     }
