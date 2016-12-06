@@ -38,20 +38,23 @@ public class GeoLocation {
             for (IpAddress ipAddress: distinctIpAddress) {
                 Location locationServices = lookup.getLocation(ipAddress.getIpAddress());
 
-                IpAddressLocation ipAddressLocation = new IpAddressLocation();
-                ipAddressLocation.setIpAddress(ipAddress.getIpAddress());
-                ipAddressLocation.setCountryCode(locationServices.countryCode);
-                ipAddressLocation.setCountryName(locationServices.countryName);
-                ipAddressLocation.setRegion(locationServices.region);
-                ipAddressLocation.setRegionName(regionName.regionNameByCode(locationServices.countryCode, locationServices.region));
-                ipAddressLocation.setCity(locationServices.city);
-                ipAddressLocation.setPostalCode(locationServices.postalCode);
-                ipAddressLocation.setLatitude(locationServices.latitude);
-                ipAddressLocation.setLongitude(locationServices.longitude);
-                ipAddressLocation.setDmaCode(locationServices.dma_code);
-                ipAddressLocation.setAreaCode(locationServices.area_code);
-                ipAddressLocation.setMetroCode(locationServices.metro_code);
-                ipAddressLocationList.add(ipAddressLocation);
+                // Need to avoid a null pointer exception, just in case the geoLiteDbFile doesn't have any information on the IP Address in question.
+                if (locationServices != null) {
+                    IpAddressLocation ipAddressLocation = new IpAddressLocation();
+                    ipAddressLocation.setIpAddress(ipAddress.getIpAddress());
+                    ipAddressLocation.setCountryCode(locationServices.countryCode);
+                    ipAddressLocation.setCountryName(locationServices.countryName);
+                    ipAddressLocation.setRegion(locationServices.region);
+                    ipAddressLocation.setRegionName(regionName.regionNameByCode(locationServices.countryCode, locationServices.region));
+                    ipAddressLocation.setCity(locationServices.city);
+                    ipAddressLocation.setPostalCode(locationServices.postalCode);
+                    ipAddressLocation.setLatitude(locationServices.latitude);
+                    ipAddressLocation.setLongitude(locationServices.longitude);
+                    ipAddressLocation.setDmaCode(locationServices.dma_code);
+                    ipAddressLocation.setAreaCode(locationServices.area_code);
+                    ipAddressLocation.setMetroCode(locationServices.metro_code);
+                    ipAddressLocationList.add(ipAddressLocation);
+                }
             }
 
         } catch (IOException e) {

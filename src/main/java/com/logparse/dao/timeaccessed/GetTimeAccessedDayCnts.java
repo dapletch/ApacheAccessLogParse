@@ -59,7 +59,7 @@ public class GetTimeAccessedDayCnts {
             + ", count(CASE WHEN hour(time_accessed)=21 THEN 1 ELSE NULL END)\n"
             + ", count(CASE WHEN hour(time_accessed)=22 THEN 1 ELSE NULL END)\n"
             + ", count(CASE WHEN hour(time_accessed)=23 THEN 1 ELSE NULL END)\n"
-            + ", count(CASE WHEN hour(time_accessed)=24 THEN 1 ELSE NULL END)\n"
+            + ", count(CASE WHEN hour(time_accessed)=0 THEN 1 ELSE NULL END)\n"
             + ", count(*) AS tot_day_cnt\n"
             + " FROM log_data\n"
             + " WHERE date(time_accessed) = ?"
@@ -160,30 +160,30 @@ public class GetTimeAccessedDayCnts {
                     continue;
                 }
                 timeAccessedDayCnt.setTimeAccessed(LogUtils.sqlDateToDateTime(resultSet.getString(1)));
-                timeAccessedDayCnt.setOneAm(resultSet.getInt(2));
-                timeAccessedDayCnt.setTwoAm(resultSet.getInt(3));
-                timeAccessedDayCnt.setThreeAm(resultSet.getInt(4));
-                timeAccessedDayCnt.setFourAm(resultSet.getInt(5));
-                timeAccessedDayCnt.setFiveAm(resultSet.getInt(6));
-                timeAccessedDayCnt.setSixAm(resultSet.getInt(7));
-                timeAccessedDayCnt.setSevenAm(resultSet.getInt(8));
-                timeAccessedDayCnt.setEightAm(resultSet.getInt(9));
-                timeAccessedDayCnt.setNineAm(resultSet.getInt(10));
-                timeAccessedDayCnt.setTenAm(resultSet.getInt(11));
-                timeAccessedDayCnt.setElevenAm(resultSet.getInt(12));
-                timeAccessedDayCnt.setTwelvePm(resultSet.getInt(13));
-                timeAccessedDayCnt.setOnePm(resultSet.getInt(14));
-                timeAccessedDayCnt.setTwoPm(resultSet.getInt(15));
-                timeAccessedDayCnt.setThreePm(resultSet.getInt(16));
-                timeAccessedDayCnt.setFourPm(resultSet.getInt(17));
-                timeAccessedDayCnt.setFivePm(resultSet.getInt(18));
-                timeAccessedDayCnt.setSixPm(resultSet.getInt(19));
-                timeAccessedDayCnt.setSevenPm(resultSet.getInt(20));
-                timeAccessedDayCnt.setEightPm(resultSet.getInt(21));
-                timeAccessedDayCnt.setNinePm(resultSet.getInt(22));
-                timeAccessedDayCnt.setTenPm(resultSet.getInt(23));
-                timeAccessedDayCnt.setElevenPm(resultSet.getInt(24));
-                timeAccessedDayCnt.setTwelveAm(resultSet.getInt(25));
+                timeAccessedDayCnt.setTwelveAm(resultSet.getInt(2));
+                timeAccessedDayCnt.setOneAm(resultSet.getInt(3));
+                timeAccessedDayCnt.setTwoAm(resultSet.getInt(4));
+                timeAccessedDayCnt.setThreeAm(resultSet.getInt(5));
+                timeAccessedDayCnt.setFourAm(resultSet.getInt(6));
+                timeAccessedDayCnt.setFiveAm(resultSet.getInt(7));
+                timeAccessedDayCnt.setSixAm(resultSet.getInt(8));
+                timeAccessedDayCnt.setSevenAm(resultSet.getInt(9));
+                timeAccessedDayCnt.setEightAm(resultSet.getInt(10));
+                timeAccessedDayCnt.setNineAm(resultSet.getInt(11));
+                timeAccessedDayCnt.setTenAm(resultSet.getInt(12));
+                timeAccessedDayCnt.setElevenAm(resultSet.getInt(13));
+                timeAccessedDayCnt.setTwelvePm(resultSet.getInt(14));
+                timeAccessedDayCnt.setOnePm(resultSet.getInt(15));
+                timeAccessedDayCnt.setTwoPm(resultSet.getInt(16));
+                timeAccessedDayCnt.setThreePm(resultSet.getInt(17));
+                timeAccessedDayCnt.setFourPm(resultSet.getInt(18));
+                timeAccessedDayCnt.setFivePm(resultSet.getInt(19));
+                timeAccessedDayCnt.setSixPm(resultSet.getInt(20));
+                timeAccessedDayCnt.setSevenPm(resultSet.getInt(21));
+                timeAccessedDayCnt.setEightPm(resultSet.getInt(22));
+                timeAccessedDayCnt.setNinePm(resultSet.getInt(23));
+                timeAccessedDayCnt.setTenPm(resultSet.getInt(24));
+                timeAccessedDayCnt.setElevenPm(resultSet.getInt(25));
                 timeAccessedDayCnt.setTotalDayCnt(resultSet.getInt(26));
                 timeAccessedDayCnt.setTimeEntered(timeAccessedDayPreReqs.getMaxTimeEntered());
             }
@@ -218,7 +218,7 @@ public class GetTimeAccessedDayCnts {
             preparedStatement.setInt(10, dayCnt.getNineAm());
             preparedStatement.setInt(11, dayCnt.getTenAm());
             preparedStatement.setInt(12, dayCnt.getElevenAm());
-            preparedStatement.setInt(13, dayCnt.getTwelveAm());
+            preparedStatement.setInt(13, dayCnt.getTwelvePm());
             preparedStatement.setInt(14, dayCnt.getOnePm());
             preparedStatement.setInt(15, dayCnt.getTwoPm());
             preparedStatement.setInt(16, dayCnt.getThreePm());
