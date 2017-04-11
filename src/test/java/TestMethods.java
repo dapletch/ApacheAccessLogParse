@@ -3,17 +3,19 @@ import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayPreReqs;
 import com.logparse.dao.timeaccessed.GetTimeAccessedDayCnts;
 import com.logparse.dao.jdbc.JDBCConnectionUtils;
-import com.logparse.reports.GenerateXLSXReport;
 import com.logparse.utils.LogUtils;
 import com.logparse.utils.OSUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
 
 import java.io.*;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -116,30 +118,28 @@ public class TestMethods {
             logger.error("There was an error creating, and or, accessing the file: \n" + e);
         }
     }
-    /*
+
     @Test
-    public void formatDate() {
+    public void testFormatDate() {
         String dateStr = "02/Jun/2016:21:16:24 -0400";
         System.out.println(DateTime.parse(dateStr, DateTimeFormat.forPattern("dd/MMM/yyyy:HH:mm:ss Z")).toDateTime());
     }
 
     @Test
-    public void getCurrentDateTime() {
+    public void testCurrentDateTime() {
         String dateStr = String.valueOf(DateTime.now());
         System.out.println(DateTime.parse(dateStr, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")).toDateTime());
     }
 
     @Test
-    public void getCurrentWorkingDirectoryWindows() {
+    public void testCurrentWorkingDirectoryWindows() {
         String dir = System.getProperty("user.dir");
         Integer index = dir.lastIndexOf("\\");
         System.out.println(dir.substring(0, index) + "\\");
     }
-    */
 
-    /*
     @Test
-    public void getPreRequisiteDates() throws SQLException, ClassNotFoundException {
+    public void testPreRequisiteDates() throws ClassNotFoundException, SQLException {
         if (connection == null) {
             connection = jdbcConnectionUtils.getConnection();
         }
@@ -157,7 +157,6 @@ public class TestMethods {
 
         jdbcConnectionUtils.closeConnection();
     }
-    */
 
     @Test
     public void apache2LogParse() {

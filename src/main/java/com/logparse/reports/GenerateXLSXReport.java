@@ -8,6 +8,8 @@ import com.logparse.utils.LogUtils;
 import com.logparse.utils.OSUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -59,10 +61,17 @@ public class GenerateXLSXReport {
             XSSFSheet ipAddressLocationSheet = workbook.createSheet("IpAddressLocation");
             XSSFSheet ipAddressCntByCntrySheet = workbook.createSheet("IpAddressCntByCntry");
 
+            // Setting the style for the headers and footers for the sheets
+            XSSFCellStyle style = workbook.createCellStyle();
+            XSSFFont font = workbook.createFont();
+            font.setFontName("Liberation Sans");
+            font.setBold(true);
+            style.setFont(font);
+
             // Calling the methods to create the sheets
-            writeTimeAccessedDayCntReportInfoToExcelSheet(timeAccessedDayCntSheet, timeAccessedDayCntList, avgTimeAccessedDayCnt);
-            writeIpAddressLocationCntInfoToExcelSheet(ipAddressLocationSheet, ipAddressLocationCntsList);
-            writeIpAddressCntryCntInfoToExcelSheet(ipAddressCntByCntrySheet, ipAddressCntByCntryList);
+            writeTimeAccessedDayCntReportInfoToExcelSheet(timeAccessedDayCntSheet, style, timeAccessedDayCntList, avgTimeAccessedDayCnt);
+            writeIpAddressLocationCntInfoToExcelSheet(ipAddressLocationSheet, style, ipAddressLocationCntsList);
+            writeIpAddressCntryCntInfoToExcelSheet(ipAddressCntByCntrySheet, style, ipAddressCntByCntryList);
 
             // Writing the sheets to the excel file
             FileOutputStream outputStream = new FileOutputStream(excelFile);
@@ -73,7 +82,7 @@ public class GenerateXLSXReport {
         }
     }
 
-    private void writeTimeAccessedDayCntReportInfoToExcelSheet(XSSFSheet timeAccessedDayCntSheet
+    private void writeTimeAccessedDayCntReportInfoToExcelSheet(XSSFSheet timeAccessedDayCntSheet, XSSFCellStyle cellStyle
             , List<TimeAccessedDayCnt> timeAccessedDayCntList
             , AvgTimeAccessedDayCnt avgTimeAccessedDayCnt) {
 
@@ -106,6 +115,8 @@ public class GenerateXLSXReport {
         rowHeader.createCell(24).setCellValue("11:00 pm");
         rowHeader.createCell(25).setCellValue("Total Day Cnt");
         rowHeader.createCell(26).setCellValue("Time Entered");
+        // Setting the cell style for the header
+        setCellStyle(rowHeader, 26, cellStyle);
 
         ListIterator<TimeAccessedDayCnt> timeAccessedDayCntIterator = timeAccessedDayCntList.listIterator();
         Integer rowIndex = 1;
@@ -170,9 +181,11 @@ public class GenerateXLSXReport {
         rowFooter.createCell(23).setCellValue(avgTimeAccessedDayCnt.getTenPmAvgCnt());
         rowFooter.createCell(24).setCellValue(avgTimeAccessedDayCnt.getElevenPmAvgCnt());
         rowFooter.createCell(25).setCellValue(avgTimeAccessedDayCnt.getTotalAvgCnt());
+        // Setting the cell style for the header
+        setCellStyle(rowFooter, 25, cellStyle);
     }
 
-    private void writeIpAddressLocationCntInfoToExcelSheet(XSSFSheet ipAddressLocationSheet
+    private void writeIpAddressLocationCntInfoToExcelSheet(XSSFSheet ipAddressLocationSheet, XSSFCellStyle cellStyle
             , List<IpAddressLocation> ipAddressLocationCntsList) {
 
         // Creating the header for the IpAddressLocation Sheet
@@ -190,6 +203,8 @@ public class GenerateXLSXReport {
         rowHeader.createCell(10).setCellValue("Area Code");
         rowHeader.createCell(11).setCellValue("Metro Code");
         rowHeader.createCell(12).setCellValue("Total Count");
+        // Setting the cell style for the header
+        setCellStyle(rowHeader, 12, cellStyle);
 
         ListIterator<IpAddressLocation> ipAddressLocationListIterator = ipAddressLocationCntsList.listIterator();
         Integer rowIndex = 1;
@@ -213,7 +228,7 @@ public class GenerateXLSXReport {
         }
     }
 
-    private void writeIpAddressCntryCntInfoToExcelSheet(XSSFSheet ipAddressCntByCntrySheet
+    private void writeIpAddressCntryCntInfoToExcelSheet(XSSFSheet ipAddressCntByCntrySheet, XSSFCellStyle cellStyle
             , List<IpAddressCntByCntry> ipAddressCntByCntryList) {
 
         // Creating the header for the IpAddressCntByCntry Sheet
@@ -224,6 +239,8 @@ public class GenerateXLSXReport {
         rowHeader.createCell(3).setCellValue("City");
         rowHeader.createCell(4).setCellValue("Region Name");
         rowHeader.createCell(5).setCellValue("Distinct IP Address Cnt");
+        // Setting the cell style for the header
+        setCellStyle(rowHeader, 5, cellStyle);
 
         ListIterator<IpAddressCntByCntry> ipAddressLocationListIterator = ipAddressCntByCntryList.listIterator();
         Integer rowIndex = 1;
@@ -236,6 +253,13 @@ public class GenerateXLSXReport {
             row.createCell(3).setCellValue(ipAddressCntByCntry.getRegion());
             row.createCell(4).setCellValue(ipAddressCntByCntry.getCity());
             row.createCell(5).setCellValue(ipAddressCntByCntry.getDistinctIpCnt());
+        }
+    }
+
+    // Method for setting the cell styles this can be used for a number of different styles
+    private void setCellStyle(Row row, Integer endIndex, XSSFCellStyle cellStyle) {
+        for (int i = 0; i <= endIndex; i++) {
+            row.getCell(i).setCellStyle(cellStyle);
         }
     }
 }
