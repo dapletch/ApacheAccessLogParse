@@ -63,7 +63,8 @@ public class GetTimeAccessedDayCnts {
             + ", count(*) AS tot_day_cnt\n"
             + " FROM log_data\n"
             + " WHERE date(time_accessed) = ?"
-            + " AND date(time_entered) = ?;";
+            + " AND date(time_entered) = ?"
+            + " GROUP BY 1;";
 
     private String insertTimeAccessedDayReport = "INSERT INTO time_accessed_day_cnt (\n"
             + " time_accessed, one_am, two_am, three_am, four_am, five_am, six_am, seven_am\n"
@@ -72,7 +73,7 @@ public class GetTimeAccessedDayCnts {
             + " , twelve_am, tot_day_cnt, time_entered\n"
             + " ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-    private String averageTimeAccessDayCntsQuery = "select round(avg(one_am), 0)\n"
+    private String averageTimeAccessDayCntsQuery = "SELECT round(avg(one_am), 0)\n"
             + ", round(avg(two_am), 0)\n"
             + ", round(avg(three_am), 0)\n"
             + ", round(avg(four_am), 0)\n"
@@ -97,8 +98,8 @@ public class GetTimeAccessedDayCnts {
             + ", round(avg(eleven_pm), 0)\n"
             + ", round(avg(twelve_am), 0)\n"
             + ", round(avg(tot_day_cnt), 0)\n"
-            + " from time_accessed_day_cnt\n"
-            + " where time_entered = ?;";
+            + " FROM time_accessed_day_cnt\n"
+            + " WHERE time_entered = ?;";
 
     public TimeAccessedDayPreReqs getMaxTimeEntered(Connection connection) throws SQLException, ClassNotFoundException {
 
@@ -155,40 +156,40 @@ public class GetTimeAccessedDayCnts {
             preparedStatement.setDate(2, LogUtils.dateTimeToSqlDate(timeAccessedDayPreReqs.getMaxTimeEntered()));
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                if (!LogUtils.isDateStringValid(resultSet.getString(1))) {
-                    // Just skip over record if the dateStr is null, that means there were no records for that day
-                    continue;
+                // if the timeAccessed attribute is null that means that no records exist for that day, skip over it
+                if (LogUtils.isDateStringValid(resultSet.getString(1))) {
+                    timeAccessedDayCnt.setTimeAccessed(LogUtils.sqlDateToDateTime(resultSet.getString(1)));
+                    timeAccessedDayCnt.setTwelveAm(resultSet.getInt(2));
+                    timeAccessedDayCnt.setOneAm(resultSet.getInt(3));
+                    timeAccessedDayCnt.setTwoAm(resultSet.getInt(4));
+                    timeAccessedDayCnt.setThreeAm(resultSet.getInt(5));
+                    timeAccessedDayCnt.setFourAm(resultSet.getInt(6));
+                    timeAccessedDayCnt.setFiveAm(resultSet.getInt(7));
+                    timeAccessedDayCnt.setSixAm(resultSet.getInt(8));
+                    timeAccessedDayCnt.setSevenAm(resultSet.getInt(9));
+                    timeAccessedDayCnt.setEightAm(resultSet.getInt(10));
+                    timeAccessedDayCnt.setNineAm(resultSet.getInt(11));
+                    timeAccessedDayCnt.setTenAm(resultSet.getInt(12));
+                    timeAccessedDayCnt.setElevenAm(resultSet.getInt(13));
+                    timeAccessedDayCnt.setTwelvePm(resultSet.getInt(14));
+                    timeAccessedDayCnt.setOnePm(resultSet.getInt(15));
+                    timeAccessedDayCnt.setTwoPm(resultSet.getInt(16));
+                    timeAccessedDayCnt.setThreePm(resultSet.getInt(17));
+                    timeAccessedDayCnt.setFourPm(resultSet.getInt(18));
+                    timeAccessedDayCnt.setFivePm(resultSet.getInt(19));
+                    timeAccessedDayCnt.setSixPm(resultSet.getInt(20));
+                    timeAccessedDayCnt.setSevenPm(resultSet.getInt(21));
+                    timeAccessedDayCnt.setEightPm(resultSet.getInt(22));
+                    timeAccessedDayCnt.setNinePm(resultSet.getInt(23));
+                    timeAccessedDayCnt.setTenPm(resultSet.getInt(24));
+                    timeAccessedDayCnt.setElevenPm(resultSet.getInt(25));
+                    timeAccessedDayCnt.setTotalDayCnt(resultSet.getInt(26));
+                    timeAccessedDayCnt.setTimeEntered(timeAccessedDayPreReqs.getMaxTimeEntered());
+                    timeAccessedDayCntList.add(timeAccessedDayCnt);
+                } else {
+                    logger.error("Query causing troublesome records: \n" + preparedStatement);
                 }
-                timeAccessedDayCnt.setTimeAccessed(LogUtils.sqlDateToDateTime(resultSet.getString(1)));
-                timeAccessedDayCnt.setTwelveAm(resultSet.getInt(2));
-                timeAccessedDayCnt.setOneAm(resultSet.getInt(3));
-                timeAccessedDayCnt.setTwoAm(resultSet.getInt(4));
-                timeAccessedDayCnt.setThreeAm(resultSet.getInt(5));
-                timeAccessedDayCnt.setFourAm(resultSet.getInt(6));
-                timeAccessedDayCnt.setFiveAm(resultSet.getInt(7));
-                timeAccessedDayCnt.setSixAm(resultSet.getInt(8));
-                timeAccessedDayCnt.setSevenAm(resultSet.getInt(9));
-                timeAccessedDayCnt.setEightAm(resultSet.getInt(10));
-                timeAccessedDayCnt.setNineAm(resultSet.getInt(11));
-                timeAccessedDayCnt.setTenAm(resultSet.getInt(12));
-                timeAccessedDayCnt.setElevenAm(resultSet.getInt(13));
-                timeAccessedDayCnt.setTwelvePm(resultSet.getInt(14));
-                timeAccessedDayCnt.setOnePm(resultSet.getInt(15));
-                timeAccessedDayCnt.setTwoPm(resultSet.getInt(16));
-                timeAccessedDayCnt.setThreePm(resultSet.getInt(17));
-                timeAccessedDayCnt.setFourPm(resultSet.getInt(18));
-                timeAccessedDayCnt.setFivePm(resultSet.getInt(19));
-                timeAccessedDayCnt.setSixPm(resultSet.getInt(20));
-                timeAccessedDayCnt.setSevenPm(resultSet.getInt(21));
-                timeAccessedDayCnt.setEightPm(resultSet.getInt(22));
-                timeAccessedDayCnt.setNinePm(resultSet.getInt(23));
-                timeAccessedDayCnt.setTenPm(resultSet.getInt(24));
-                timeAccessedDayCnt.setElevenPm(resultSet.getInt(25));
-                timeAccessedDayCnt.setTotalDayCnt(resultSet.getInt(26));
-                timeAccessedDayCnt.setTimeEntered(timeAccessedDayPreReqs.getMaxTimeEntered());
             }
-            //logger.info(timeAccessedDayCnt.toString());
-            timeAccessedDayCntList.add(timeAccessedDayCnt);
         }
         return timeAccessedDayCntList;
     }
@@ -203,37 +204,39 @@ public class GetTimeAccessedDayCnts {
         if (preparedStatement == null) {
             preparedStatement = connection.prepareStatement(insertTimeAccessedDayReport);
         }
-
         for (TimeAccessedDayCnt dayCnt : timeAccessedDayCntList) {
             preparedStatement.clearParameters();
-            preparedStatement.setDate(1, LogUtils.dateTimeToSqlDate(dayCnt.getTimeAccessed()));
-            preparedStatement.setInt(2, dayCnt.getOneAm());
-            preparedStatement.setInt(3, dayCnt.getTwoAm());
-            preparedStatement.setInt(4, dayCnt.getThreeAm());
-            preparedStatement.setInt(5, dayCnt.getFourAm());
-            preparedStatement.setInt(6, dayCnt.getFiveAm());
-            preparedStatement.setInt(7, dayCnt.getSixAm());
-            preparedStatement.setInt(8, dayCnt.getSevenAm());
-            preparedStatement.setInt(9, dayCnt.getEightAm());
-            preparedStatement.setInt(10, dayCnt.getNineAm());
-            preparedStatement.setInt(11, dayCnt.getTenAm());
-            preparedStatement.setInt(12, dayCnt.getElevenAm());
-            preparedStatement.setInt(13, dayCnt.getTwelvePm());
-            preparedStatement.setInt(14, dayCnt.getOnePm());
-            preparedStatement.setInt(15, dayCnt.getTwoPm());
-            preparedStatement.setInt(16, dayCnt.getThreePm());
-            preparedStatement.setInt(17, dayCnt.getFourPm());
-            preparedStatement.setInt(18, dayCnt.getFivePm());
-            preparedStatement.setInt(19, dayCnt.getSixPm());
-            preparedStatement.setInt(20, dayCnt.getSevenPm());
-            preparedStatement.setInt(21, dayCnt.getEightPm());
-            preparedStatement.setInt(22, dayCnt.getNinePm());
-            preparedStatement.setInt(23, dayCnt.getTenPm());
-            preparedStatement.setInt(24, dayCnt.getElevenPm());
-            preparedStatement.setInt(25, dayCnt.getTwelveAm());
-            preparedStatement.setInt(26, dayCnt.getTotalDayCnt());
-            preparedStatement.setDate(27, LogUtils.dateTimeToSqlDate(dayCnt.getTimeEntered()));
-            preparedStatement.execute();
+            // if the timeAccessed and timeEntered attributes are null there were no records for that day, skip over the record
+            if (dayCnt.getTimeAccessed() != null && dayCnt.getTimeEntered() != null) {
+                preparedStatement.setDate(1, LogUtils.dateTimeToSqlDate(dayCnt.getTimeAccessed()));
+                preparedStatement.setInt(2, dayCnt.getOneAm());
+                preparedStatement.setInt(3, dayCnt.getTwoAm());
+                preparedStatement.setInt(4, dayCnt.getThreeAm());
+                preparedStatement.setInt(5, dayCnt.getFourAm());
+                preparedStatement.setInt(6, dayCnt.getFiveAm());
+                preparedStatement.setInt(7, dayCnt.getSixAm());
+                preparedStatement.setInt(8, dayCnt.getSevenAm());
+                preparedStatement.setInt(9, dayCnt.getEightAm());
+                preparedStatement.setInt(10, dayCnt.getNineAm());
+                preparedStatement.setInt(11, dayCnt.getTenAm());
+                preparedStatement.setInt(12, dayCnt.getElevenAm());
+                preparedStatement.setInt(13, dayCnt.getTwelvePm());
+                preparedStatement.setInt(14, dayCnt.getOnePm());
+                preparedStatement.setInt(15, dayCnt.getTwoPm());
+                preparedStatement.setInt(16, dayCnt.getThreePm());
+                preparedStatement.setInt(17, dayCnt.getFourPm());
+                preparedStatement.setInt(18, dayCnt.getFivePm());
+                preparedStatement.setInt(19, dayCnt.getSixPm());
+                preparedStatement.setInt(20, dayCnt.getSevenPm());
+                preparedStatement.setInt(21, dayCnt.getEightPm());
+                preparedStatement.setInt(22, dayCnt.getNinePm());
+                preparedStatement.setInt(23, dayCnt.getTenPm());
+                preparedStatement.setInt(24, dayCnt.getElevenPm());
+                preparedStatement.setInt(25, dayCnt.getTwelveAm());
+                preparedStatement.setInt(26, dayCnt.getTotalDayCnt());
+                preparedStatement.setDate(27, LogUtils.dateTimeToSqlDate(dayCnt.getTimeEntered()));
+                preparedStatement.execute();
+            }
         }
 
         logger.info("Records written to database.");

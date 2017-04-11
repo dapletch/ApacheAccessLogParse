@@ -6,6 +6,7 @@ import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.utils.LogUtils;
 import com.logparse.utils.OSUtils;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,16 +17,21 @@ import java.util.List;
 /**
  * Created by Seth on 11/25/2016.
  */
+@Deprecated
 public class GenerateCSVReport {
 
+    private Logger logger = Logger.getLogger(GenerateCSVReport.class);
+
+    @Deprecated
     public void writeTimeAccessedDayCntReportInfoToCSVDDocument(List<TimeAccessedDayCnt> timeAccessedDayCntList, AvgTimeAccessedDayCnt avgTimeAccessedDayCnt) {
 
         try {
             File csvReport = new File(OSUtils.getFilePathAboveCurrentOne() + "PletcherWebDesignUsage" + LogUtils.generateFileTimeStamp() + ".csv");
-
+            Boolean fileCreated;
             // if file doesnt exists, then create it
             if (!csvReport.exists()) {
-                csvReport.createNewFile();
+                fileCreated = csvReport.createNewFile();
+                logger.info("File Created: " + csvReport + " " + fileCreated);
             }
 
             FileWriter fw = new FileWriter(csvReport.getAbsoluteFile());
@@ -60,7 +66,7 @@ public class GenerateCSVReport {
                     + "Time Entered\n");
 
             for (TimeAccessedDayCnt timeAccessedDayCnt : timeAccessedDayCntList) {
-                bw.write(timeAccessedDayCnt.getTimeEntered() + ","
+                bw.write(timeAccessedDayCnt.getTimeAccessed() + ","
                          + timeAccessedDayCnt.getTwelveAm() + ","
                          + timeAccessedDayCnt.getOneAm() + ","
                          + timeAccessedDayCnt.getTwoAm() + ","
@@ -122,13 +128,15 @@ public class GenerateCSVReport {
         }
     }
 
+    @Deprecated
     public void writeIpAccessLocationCntInfoToTxtDocument(List<IpAddressLocation> ipAddressLocationList) {
         try {
             File ipAddressLocationCsv = new File(OSUtils.getFilePathAboveCurrentOne() + "IpAddressLocationCnt" + LogUtils.generateFileTimeStamp() + ".txt");
-
+            Boolean fileCreated;
             // if file doesnt exists, then create it
             if (!ipAddressLocationCsv.exists()) {
-                ipAddressLocationCsv.createNewFile();
+                fileCreated = ipAddressLocationCsv.createNewFile();
+                logger.info("File Created: " + ipAddressLocationCsv + " " + fileCreated);
             }
 
             FileWriter fw = new FileWriter(ipAddressLocationCsv.getAbsoluteFile());
@@ -170,13 +178,15 @@ public class GenerateCSVReport {
         }
     }
 
+    @Deprecated
     public void writeIpAccessCntryCntInfoToTxtDocument(List<IpAddressCntByCntry> ipAddressCntByCntryList) {
         try {
             File ipAddressCntryTxt = new File(OSUtils.getFilePathAboveCurrentOne() + "IpAddressCntry" + LogUtils.generateFileTimeStamp() + ".txt");
-
+            Boolean fileCreated;
             // if file doesnt exists, then create it
             if (!ipAddressCntryTxt.exists()) {
-                ipAddressCntryTxt.createNewFile();
+                fileCreated = ipAddressCntryTxt.createNewFile();
+                logger.info("File Created: " + ipAddressCntryTxt + " " + fileCreated);
             }
 
             FileWriter fw = new FileWriter(ipAddressCntryTxt.getAbsoluteFile());

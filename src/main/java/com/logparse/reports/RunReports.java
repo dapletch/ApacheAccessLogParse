@@ -12,6 +12,7 @@ import com.logparse.dao.ipaddresslocation.InsertIpAddressLocation;
 import com.logparse.dao.ipaddresslocation.IpAddressLocationCnts;
 import com.logparse.dao.jdbc.JDBCConnectionUtils;
 import com.logparse.geolocation.GeoLocation;
+import com.logparse.utils.LogUtils;
 import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -55,6 +56,8 @@ public class RunReports {
 
     private List<IpAddressCntByCntry> ipAddressCntByCntryList = new ArrayList<IpAddressCntByCntry>();
 
+    private GenerateXLSXReport generateXLSXReport = new GenerateXLSXReport();
+
     private Connection connection = null;
 
     public void getPreReqsRunReports() throws SQLException, ClassNotFoundException {
@@ -93,11 +96,16 @@ public class RunReports {
         ipAddressCntByCntryList = ipAddressLocationCnts.getIpAddressCntryCnts(connection);
 
         generateHTMLReport.writeReportInfoToHTMLDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
-        generateCSVReport.writeTimeAccessedDayCntReportInfoToCSVDDocument(timeAccessedDayCntList, avgTimeAccessedDayCnt);
-        // originally meant to be a csv but the commas in the country made the csv document format incorrect
-        generateCSVReport.writeIpAccessLocationCntInfoToTxtDocument(ipAddressLocationCntsList);
-        // creating the ip address country count report
-        generateCSVReport.writeIpAccessCntryCntInfoToTxtDocument(ipAddressCntByCntryList);
+
+        // Replaced the the generateCSVReport functionality/methods with the methods in the GenerateXLSXReport class
+        // that way all the reports generated will be in one single ExcelSheet, which will far easier to obtain and perform reporting on
+        generateXLSXReport.generateExcelSheetReports(
+                timeAccessedDayCntList
+                , avgTimeAccessedDayCnt
+                , ipAddressLocationCntsList
+                , ipAddressCntByCntryList
+        );
+        logger.info("Reporting Done...");
 
         jdbcConnectionUtils.closeConnection();
     }

@@ -4,6 +4,7 @@ import com.logparse.beans.timeaccessed.AvgTimeAccessedDayCnt;
 import com.logparse.beans.timeaccessed.TimeAccessedDayCnt;
 import com.logparse.utils.LogUtils;
 import com.logparse.utils.OSUtils;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,14 +17,17 @@ import java.util.List;
  */
 public class GenerateHTMLReport {
 
+    private Logger logger = Logger.getLogger(GenerateHTMLReport.class);
+
     public void writeReportInfoToHTMLDocument(List<TimeAccessedDayCnt> timeAccessedDayCntList, AvgTimeAccessedDayCnt avgTimeAccessedDayCnt) {
 
         try {
             File htmlReport = new File(OSUtils.getFilePathAboveCurrentOne() + "PletcherWebDesignUsage" + LogUtils.generateFileTimeStamp() + ".html");
-
+            Boolean fileCreated;
             // if file doesnt exists, then create it
             if (!htmlReport.exists()) {
-                htmlReport.createNewFile();
+                fileCreated = htmlReport.createNewFile();
+                logger.info("File created: " + htmlReport + " " + fileCreated);
             }
 
             FileWriter fw = new FileWriter(htmlReport.getAbsoluteFile());
@@ -72,7 +76,7 @@ public class GenerateHTMLReport {
                     + "</tr>");
 
             for (TimeAccessedDayCnt timeAccessedDayCnt : timeAccessedDayCntList) {
-                bw.write("<tr><td>" + timeAccessedDayCnt.getTimeEntered() + "</td>\n"
+                bw.write("<tr><td>" + timeAccessedDayCnt.getTimeAccessed() + "</td>\n"
                         + "<td>" + timeAccessedDayCnt.getTwelveAm() + "</td>\n"
                         + "<td>" + timeAccessedDayCnt.getOneAm() + "</td>\n"
                         + "<td>" + timeAccessedDayCnt.getTwoAm() + "</td>\n"
