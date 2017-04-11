@@ -40,7 +40,6 @@ public class GenerateXLSXReport {
 
     private Logger logger = Logger.getLogger(GenerateXLSXReport.class);
 
-    // TODO need to test this method more with other log files before it goes into production
     // This method is the flow control for the Excel Sheet reports
     public void generateExcelSheetReports(List<TimeAccessedDayCnt> timeAccessedDayCntList
             , AvgTimeAccessedDayCnt avgTimeAccessedDayCnt
